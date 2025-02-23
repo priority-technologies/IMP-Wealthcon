@@ -1,0 +1,79 @@
+// Cors
+
+[
+  {
+      "AllowedHeaders": [
+          "*"
+      ],
+      "AllowedMethods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE"
+      ],
+      "AllowedOrigins": [
+          "http://localhost:3000",
+          "https://wealthcon-lms.vercel.app"
+      ],
+      "ExposeHeaders": [
+          "ETag"
+      ],
+      "MaxAgeSeconds": 3000
+  }
+]
+
+
+
+{
+	"Version": "2012-10-17",
+	"Id": "http referer policy example",
+	"Statement": [
+		{
+			"Sid": "Allow get requests originating from www.example.com and example.com.",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::lms-rajat-bucket/*",
+			"Condition": {
+				"StringLike": {
+					"aws:Referer": [
+						"http://localhost:3000/admin/*",
+						"http://localhost:3000/*",
+						"https://wealthcon-lms.vercel.app/*",
+						"https://wealthcon-lms.vercel.app/admin/*"
+					]
+				}
+			}
+		}
+	]
+}
+
+
+{
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontServicePrincipal",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::lms-rajat-bucket/*",
+            "Condition": {
+                "StringEquals": {
+                  "AWS:SourceArn": "arn:aws:cloudfront::381492020022:distribution/EF2Q23JJFCDS2"
+                },
+                "StringLike": {
+                    "aws:Referer": [
+                      "http://localhost:3000/admin/*",
+                      "http://localhost:3000/*",
+                      "https://wealthcon-lms.vercel.app/*",
+                      "https://wealthcon-lms.vercel.app/admin/*"
+                    ]
+                  }
+            }
+        }
+    ]
+  }
