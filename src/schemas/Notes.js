@@ -6,12 +6,12 @@ const notesSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "Title is required"],
-      trim: true
+      trim: true,
     },
     description: {
       type: String,
       required: [true, "Description is required"],
-      trim: true
+      trim: true,
     },
     thumbnail: {
       type: String,
@@ -57,6 +57,10 @@ const notesSchema = new mongoose.Schema(
     viewCount: {
       type: Number,
       default: 0,
+    },
+    type: {
+      type: String,
+      required: true,
     },
   },
   {

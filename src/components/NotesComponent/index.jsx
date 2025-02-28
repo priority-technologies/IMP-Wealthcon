@@ -7,10 +7,16 @@ import { UserContext } from "../../app/_context/User";
 import axios from "axios";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
+import GalleryModal from "../Modal/GalleryModal";
+import GallaryCard from "../Card/GallaryCard";
 
 export default function NoteComponent({ view, editAble, filter }) {
   const router = useRouter();
   const { notes, setNotes, loading, setLoading } = useContext(UserContext);
+
+  const [gallaryModal, setGallaryModal] = useState(false);
+  const [clickIndex, setClickIndex] = useState(null);
+  const [gallarydata, setGallaryData] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -50,6 +56,14 @@ export default function NoteComponent({ view, editAble, filter }) {
   );
 
   useEffect(() => {
+    const data = notes?.[clickIndex];
+    if (data) {
+      const updatedData = { ...data, image: data.noteUrl };
+      setGallaryData([updatedData]);
+    }
+  }, [clickIndex]);
+
+  useEffect(() => {
     if (initialLoad) {
       setInitialLoad(false);
       return;
@@ -73,8 +87,16 @@ export default function NoteComponent({ view, editAble, filter }) {
   if (loading) {
     return <PageLoading />;
   }
+
   return (
     <div>
+      <GalleryModal
+        data={gallarydata}
+        showModal={gallaryModal}
+        setShowModal={setGallaryModal}
+        clickIndex={clickIndex}
+        editAble={editAble}
+      />
       <div
         className={`mt-5 custom_scroll grid ${
           view === "grid"
@@ -83,14 +105,32 @@ export default function NoteComponent({ view, editAble, filter }) {
         }`}
       >
         {notes?.length ? (
-          notes.map((item, index) => (
-            <NotesCard
-              key={index}
-              item={item}
-              view={view}
-              editAble={editAble}
-            />
-          ))
+          notes.map((item, index) => {
+            if (item.type === "image") {
+              return (
+                <GallaryCard
+                  key={index}
+                  item={{ ...item, image: item.noteUrl }}
+                  setClickIndex={setClickIndex}
+                  index={index}
+                  gallaryModal={gallaryModal}
+                  setGallaryModal={setGallaryModal}
+                  view={view}
+                  editAble={editAble}
+                  type={item.type}
+                />
+              );
+            }
+
+            return (
+              <NotesCard
+                key={index}
+                item={item}
+                view={view}
+                editAble={editAble}
+              />
+            );
+          })
         ) : (
           <div>Notes Not Available</div>
         )}

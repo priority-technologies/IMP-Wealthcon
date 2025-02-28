@@ -16,6 +16,7 @@ export async function middleware(request) {
     !isPublicPath &&
     path.startsWith("/api/") &&
     !path.endsWith("login") &&
+    !path.endsWith("live") &&
     !path.endsWith("register") &&
     !path.endsWith("generate-otp") &&
     !path.endsWith("verify-otp") &&

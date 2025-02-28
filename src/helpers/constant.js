@@ -12,7 +12,7 @@ export const s3 = new AWS.S3({
 });
 
 export const adminRoleObject = {
-  all: "All",
+  admin: "Admin",
   lot1: "Lot 1",
   lot2: "Lot 2",
   lot3: "Lot 3",

@@ -9,6 +9,7 @@ const nextConfig = {
       },
     ]
   },
+  swcMinify: false,
   reactStrictMode: false,
   experimental: {
     serverActions: {

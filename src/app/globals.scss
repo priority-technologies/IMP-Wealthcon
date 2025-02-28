@@ -33,7 +33,6 @@ body {
   overflow-y: scroll;
   height: 60vh;
   width: 100%;
-  
 }
 
 .mobile-search {
@@ -92,7 +91,25 @@ body {
   }
 }
 
-.decs a{
+.decs a {
   color: oklch(var(--p));
   word-break: break-all;
+}
+
+.rajat #react-doc-viewer {
+  height: 100%;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-select * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

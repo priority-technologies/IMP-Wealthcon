@@ -236,7 +236,7 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
                 </Typography>
                 <Select
                   label="Category"
-                  options={[{ label: "All", value: "all" }, ...roleOptions]}
+                  options={roleOptions}
                   disabled={fieldsDisable}
                   {...formik.getFieldProps("category")}
                   error={formik.touched.category && formik.errors.category}
