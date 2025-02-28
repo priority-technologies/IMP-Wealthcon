@@ -16,6 +16,7 @@ export async function POST(request) {
       description,
       studentCategory,
       pageCount,
+      type
     } = await request.json();
 
     if (
@@ -44,6 +45,7 @@ export async function POST(request) {
       noteFileName: filename,
       studentCategory: JSON.parse(studentCategory),
       pageCount,
+      type,
       notesCreatedAt: parsedDate
     });
     const { _id } = await newNotes.save();

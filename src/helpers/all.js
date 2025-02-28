@@ -149,3 +149,20 @@ export const debounce = (fn, delay) => {
     }, delay);
   };
 }
+
+export const getFileType = (fileName) => {
+  const fileExtension = fileName.split('.').pop().toLowerCase();
+
+  const fileTypeMap = {
+    pdf: 'pdf',
+    xls: 'excel',
+    xlsx: 'excel',
+    png: 'image',
+    jpg: 'image',
+    jpeg: 'image',
+    doc: 'word',
+    docx: 'word'
+  };
+
+  return fileTypeMap[fileExtension] || 'unknown';
+};

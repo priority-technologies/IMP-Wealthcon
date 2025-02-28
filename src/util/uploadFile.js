@@ -257,6 +257,7 @@ export async function completeUploadNotes(
   description,
   studentCategory,
   pageCount,
+  type,
   cancelToken
 ) {
   try {
@@ -272,6 +273,7 @@ export async function completeUploadNotes(
         description,
         studentCategory,
         pageCount,
+        type
       },
       {
         headers: {

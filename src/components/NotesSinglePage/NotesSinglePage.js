@@ -132,6 +132,7 @@ export default function NotesSinglePage({ notesId, admin }) {
           pdfUrl={pdfUrl}
           showPdf={showPdf}
           setShowPdf={setShowPdf}
+          type={pdfData?.type}
         />
       ) : (
         <div>

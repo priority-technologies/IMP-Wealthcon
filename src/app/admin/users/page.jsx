@@ -13,6 +13,7 @@ import Pagination from "@/components/Pagination";
 import { useRouter } from "next/navigation";
 import { debounce } from "@/helpers/all";
 import Input from "@/components/Input";
+import { roleOptions } from "@/helpers/constant";
 
 const Filter = () => {
   const router = useRouter();
@@ -177,21 +178,7 @@ const Filter = () => {
             onChange={handleFilterChange}
             options={[
               { label: "All Category", value: "all" },
-              { label: "Lot 1", value: "lot1" },
-              { label: "Lot 2", value: "lot2" },
-              { label: "Lot 3", value: "lot3" },
-              { label: "Lot 4", value: "lot4" },
-              { label: "Lot 5", value: "lot5" },
-              { label: "Lot 6", value: "lot6" },
-              { label: "Lot 7", value: "lot7" },
-              { label: "Lot 8", value: "lot8" },
-              { label: "Lot 9", value: "lot9" },
-              { label: "Lot 10", value: "lot10" },
-              { label: "Lot 11", value: "lot11" },
-              { label: "Lot 12", value: "lot12" },
-              { label: "Lot 13", value: "lot13" },
-              { label: "Lot 14", value: "lot14" },
-              { label: "Lot 15", value: "lot15" },
+              ...roleOptions
             ]}            
             className="border rounded-none w-full p-4 pr-10"
           />
