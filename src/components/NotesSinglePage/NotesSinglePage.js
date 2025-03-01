@@ -11,7 +11,7 @@ import PageLoading from "@/components/Loading/PageLoading";
 import axios from "axios";
 import Image from "next/image";
 import { adminRoleObject } from "@/helpers/constant";
-import logo from "@/assets/images/svg/smalllogo2.svg";
+import logo from "@/assets/images/thumb-logo.jpg";
 import User from "../User";
 import InfiniteScroll from "react-infinite-scroll-component";
 

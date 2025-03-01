@@ -39,7 +39,7 @@ const Filter = ({
         setBtnTitle("Add Video");
         break;
       case "notes":
-        setBtnTitle("Upload Notes");
+        setBtnTitle("Upload Notes & Charts");
         break;
       case "gallary":
         setBtnTitle("Upload Photos");
@@ -104,7 +104,7 @@ const Filter = ({
             <NotesUploader
               showModal={showModal}
               setShowModal={setShowModal}
-              modalTitle="Upload notes"
+              modalTitle="Upload notes & charts"
             />
           ) : type === "gallary" ? (
             <GalleryUploader

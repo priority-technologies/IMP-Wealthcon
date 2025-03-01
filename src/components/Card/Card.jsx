@@ -3,7 +3,7 @@ import './card.scss';
 import { Fragment } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import Link from 'next/link';
-import logo from '@/assets/images/svg/smalllogo2.svg';
+import logo from '@/assets/images/thumb-logo.jpg';
 
 const Card = ({ item, view, editAble }) => {
 	return (

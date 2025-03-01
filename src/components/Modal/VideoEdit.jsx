@@ -72,10 +72,10 @@ const VideoEdit = ({ id, showModal, setShowModal, modalTitle, item }) => {
         .of(
           Yup.string().oneOf(
             adminRoles,
-            "Invalid student category"
+            "Invalid category"
           )
         )
-        .min(1, "At least one student category is required"),
+        .min(1, "At least one category is required"),
       videoCategory: Yup.string()
         .required("Video category is required")
         .oneOf(["live", "assignment"], "Invalid video category"),

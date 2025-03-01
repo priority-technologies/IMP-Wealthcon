@@ -46,7 +46,7 @@ const videoSchema = new mongoose.Schema(
           validator: function (v) {
             return v.length > 0;
           },
-          message: "At least one student category is required",
+          message: "At least one category is required",
         },
       },
     ],

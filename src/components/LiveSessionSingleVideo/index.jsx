@@ -28,6 +28,7 @@ import { adminRoleObject } from "@/helpers/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
 import User from "../User";
 import Image from "next/image";
+import logo from '@/assets/images/thumb-logo.jpg';
 
 export default function LiveSessionSingleVideo({ videoId, admin }) {
   const router = useRouter();
@@ -245,7 +246,7 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
               ref={playerRef}
               autoPlay={false}
               className="videoPlayer aspect-video mb-4"
-              poster={video?.thumbnail}
+              poster={video?.thumbnail || logo?.src}
               onContextMenu={(e) => e.preventDefault()} // Disable right-click
               // onMouseDown={(e) => e.preventDefault()} // Disable mouse down actions
               // onMouseUp={(e) => e.preventDefault()} // Disable mouse up actions

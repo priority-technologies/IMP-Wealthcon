@@ -66,10 +66,10 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
         .of(
           Yup.string().oneOf(
             adminRoles,
-            "Invalid student category"
+            "Invalid category"
           )
         )
-        .min(1, "At least one student category is required"),
+        .min(1, "At least one category is required"),
       videoCategory: Yup.string()
         .required("Video category is required")
         .oneOf(["live", "assignment"], "Invalid video category"),
@@ -342,7 +342,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
                   }
                 />
 
-                <div className="category-checks grid gap-3 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 mb-3">
+                {/* <div className="category-checks grid gap-3 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 mb-3">
                   {[{ label: "Shorts", value: "shorts" }].map(
                     (category, index) => (
                       <InputChecks
@@ -360,7 +360,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
                       />
                     )
                   )}
-                </div>
+                </div> */}
 
                 <Typography
                   tag="p"
