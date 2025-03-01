@@ -54,10 +54,10 @@ const AddAnnouncement = ({ showModal, setShowModal }) => {
               "lot14",
               "lot15",
             ],
-            "Invalid student category"
+            "Invalid category"
           )
         )
-        .min(1, "At least one student category is required"),
+        .min(1, "At least one category is required"),
     }),
     onSubmit: async (values) => {
       try {

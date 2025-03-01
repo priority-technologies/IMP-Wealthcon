@@ -54,8 +54,8 @@ const NotesUploader = ({ showModal, setShowModal, modalTitle }) => {
       title: Yup.string().required("Title is required").trim(),
       description: Yup.string().required("Description is required").trim(),
       studentCategory: Yup.array()
-        .of(Yup.string().oneOf(adminRoles, "Invalid student category"))
-        .min(1, "At least one student category is required"),
+        .of(Yup.string().oneOf(adminRoles, "Invalid category"))
+        .min(1, "At least one category is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -239,7 +239,7 @@ const NotesUploader = ({ showModal, setShowModal, modalTitle }) => {
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-3 mb-4">
                   <Uploader
                     filename={formik.values.file?.name}
-                    title="Drag and drop Pdf files to upload"
+                    title="Drag and drop files to upload"
                     fileTypes={[
                       "PDF",
                       "XLS",

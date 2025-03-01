@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "../../assets/images/svg/smalllogo2.svg";
+import Logo from "../../assets/images/thumb-logo.jpg";
 import Ramsir from "../../assets/images/ramsir.jpeg";
 import { Fragment, useContext, useState } from "react";
 import "./showmessage.scss";

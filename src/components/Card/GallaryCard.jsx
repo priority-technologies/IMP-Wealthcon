@@ -8,7 +8,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import axios from "axios";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { UserContext } from "@/app/_context/User";
-import logo from "@/assets/images/svg/smalllogo2.svg";
+import logo from "@/assets/images/thumb-logo.jpg";
 import { adminRoleObject } from "@/helpers/constant";
 import ViewUserModel from "../Modal/ViewUserModel";
 

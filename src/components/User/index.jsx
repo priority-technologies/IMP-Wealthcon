@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "@/assets/images/svg/smalllogo2.svg";
+import logo from "@/assets/images/thumb-logo.jpg";
 
 function User({ className = "", image = null, name, email }) {
   return (

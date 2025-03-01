@@ -63,10 +63,10 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
         .of(
           Yup.string().oneOf(
             adminRoles,
-            "Invalid student category"
+            "Invalid category"
           )
         )
-        .min(1, "At least one student category is required"),
+        .min(1, "At least one category is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -240,7 +240,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-3 mb-4">
                   <Uploader
                     filename={formik.values.file?.name}
-                    title="Drag and drop Pdf files to upload"
+                    title="Drag and drop files to upload"
                     fileTypes={["PDF"]}
                     multiple={false}
                     classes="max-w-full"

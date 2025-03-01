@@ -10,7 +10,7 @@ import ConfirmModal from '../Modal/ConfirmModal';
 import NotesEdit from '../Modal/NotesEdit';
 import axios from 'axios';
 import { UserContext } from '@/app/_context/User';
-import logo from '@/assets/images/thumb-logo.svg';
+import logo from '@/assets/images/thumb-logo.jpg';
 import { adminRoleObject } from '@/helpers/constant';
 
 const NotesCard = ({ item, view, editAble }) => {

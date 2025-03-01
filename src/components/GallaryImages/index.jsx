@@ -79,7 +79,7 @@ export default function GallaryImages({ view, editAble, filter, type }) {
   if (loading) {
     return <PageLoading />;
   }
-console.log("gallery",gallery)
+  
   return (
     <div>
       <GalleryModal
