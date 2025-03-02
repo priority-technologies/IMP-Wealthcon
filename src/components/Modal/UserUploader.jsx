@@ -29,7 +29,7 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
   const formik = useFormik({
     initialValues: {
       fullName: "",
-      category: "",
+      role: "",
       mobileNumber: "",
       password: "",
       confirmPassword: "",
@@ -43,12 +43,9 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
         .trim()
         .min(3, "Name must be at least 3 characters")
         .max(100, "Name cannot exceed 100 characters"),
-      category: Yup.string()
-        .required("Category is required")
-        .oneOf(
-          roles,
-          "Invalid category"
-        ),
+      role: Yup.string()
+        .required("Role is required")
+        .oneOf(roles, "Invalid role"),
       mobileNumber: Yup.string()
         .required("Mobile number is required")
         .matches(/^[0-9]{5,15}$/, "Mobile number is not valid"),
@@ -74,7 +71,7 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
           username: fullName,
           email: values?.email,
           password: values?.password,
-          role: values?.category,
+          role: values?.role || "lot15",
           mobile: values?.mobileNumber,
           district: values?.district,
           state: values?.state,
@@ -116,7 +113,7 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
         password: "",
         confirmPassword: "",
         mobileNumber: "",
-        category: "",
+        role: "",
         district: "",
         state: "",
       },
@@ -135,7 +132,7 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
           password: "",
           confirmPassword: "",
           mobileNumber: "",
-          category: "",
+          role: "",
           district: "",
           state: "",
         },
@@ -210,112 +207,116 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
                 onDataParsed={handleDataParsed}
               />
             </div>
-            <div className="text-center mt-4 mb-4 text-xl">
-              <b>- Or - </b>
-            </div>
+            {!fieldsDisable && (
+              <>
+                <div className="text-center mt-4 mb-4 text-xl">
+                  <b>- Or - </b>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                type="text"
-                id="fullName"
-                label="Full Name"
-                className="capitalize"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("fullName")}
-                error={formik.touched.fullName && formik.errors.fullName}
-              />
-              <div>
-                <Typography
-                  tag="p"
-                  size="text-sm"
-                  weight="font-normal"
-                  color="text-base-100"
-                  className="mb-1"
-                >
-                  Category
-                </Typography>
-                <Select
-                  label="Category"
-                  options={roleOptions}
-                  disabled={fieldsDisable}
-                  {...formik.getFieldProps("category")}
-                  error={formik.touched.category && formik.errors.category}
-                  className="modelSelect"
-                />
-                {formik.touched.category && formik.errors.category ? (
-                  <span className="text-red-600">Category is required</span>
-                ) : (
-                  ""
-                )}
-              </div>
-              <Input
-                type="number"
-                id="mobileNumber"
-                label="Mobile Number"
-                pattern="[0-9]{5,15}"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("mobileNumber")}
-                error={
-                  formik.touched.mobileNumber && formik.errors.mobileNumber
-                }
-              />
-              <Input
-                type="email"
-                id="email"
-                label="Email"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("email")}
-                error={formik.touched.email && formik.errors.email}
-              />
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  label="Password"
-                  disabled={fieldsDisable}
-                  {...formik.getFieldProps("password")}
-                  error={formik.touched.password && formik.errors.password}
-                />
-                {
-                  <Image
-                    priority
-                    src={showPassword ? closeEye : openEye}
-                    height={26}
-                    width={26}
-                    alt="Password seen eye"
-                    className="absolute top-8 right-2 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    type="text"
+                    id="fullName"
+                    label="Full Name"
+                    className="capitalize"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("fullName")}
+                    error={formik.touched.fullName && formik.errors.fullName}
                   />
-                }
-              </div>
-              <Input
-                type="password"
-                id="confirmPassword"
-                label="Confirm Password"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("confirmPassword")}
-                error={
-                  formik.touched.confirmPassword &&
-                  formik.errors.confirmPassword
-                }
-              />
-              <Input
-                type="text"
-                id="district"
-                label="District"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("district")}
-                error={formik.touched.district && formik.errors.district}
-              />
-              <Input
-                type="text"
-                id="state"
-                label="State"
-                disabled={fieldsDisable}
-                {...formik.getFieldProps("state")}
-                error={formik.touched.state && formik.errors.state}
-              />
-            </div>
+                  <div>
+                    <Typography
+                      tag="p"
+                      size="text-sm"
+                      weight="font-normal"
+                      color="text-base-100"
+                      className="mb-1"
+                    >
+                      Category
+                    </Typography>
+                    <Select
+                      label="Category"
+                      options={roleOptions}
+                      disabled={fieldsDisable}
+                      {...formik.getFieldProps("category")}
+                      error={formik.touched.category && formik.errors.category}
+                      className="modelSelect"
+                    />
+                    {formik.touched.category && formik.errors.category ? (
+                      <span className="text-red-600">Category is required</span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <Input
+                    type="number"
+                    id="mobileNumber"
+                    label="Mobile Number"
+                    pattern="[0-9]{5,15}"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("mobileNumber")}
+                    error={
+                      formik.touched.mobileNumber && formik.errors.mobileNumber
+                    }
+                  />
+                  <Input
+                    type="email"
+                    id="email"
+                    label="Email"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("email")}
+                    error={formik.touched.email && formik.errors.email}
+                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      label="Password"
+                      disabled={fieldsDisable}
+                      {...formik.getFieldProps("password")}
+                      error={formik.touched.password && formik.errors.password}
+                    />
+                    {
+                      <Image
+                        priority
+                        src={showPassword ? closeEye : openEye}
+                        height={26}
+                        width={26}
+                        alt="Password seen eye"
+                        className="absolute top-8 right-2 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    }
+                  </div>
+                  <Input
+                    type="password"
+                    id="confirmPassword"
+                    label="Confirm Password"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("confirmPassword")}
+                    error={
+                      formik.touched.confirmPassword &&
+                      formik.errors.confirmPassword
+                    }
+                  />
+                  <Input
+                    type="text"
+                    id="district"
+                    label="District"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("district")}
+                    error={formik.touched.district && formik.errors.district}
+                  />
+                  <Input
+                    type="text"
+                    id="state"
+                    label="State"
+                    disabled={fieldsDisable}
+                    {...formik.getFieldProps("state")}
+                    error={formik.touched.state && formik.errors.state}
+                  />
+                </div>
+              </>
+            )}
             <div className="flex flex-wrap gap-3 mt-8 justify-center">
               <Button
                 variant="btn-primary"
