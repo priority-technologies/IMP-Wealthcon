@@ -23,7 +23,7 @@ const UploaderUser = ({ title, fileTypes, classes, onDataParsed }) => {
               email: row["Email"],
               password: row["Mobile number"], // This assumes mobile number is used as password (confirm if correct)
               mobile: row["Mobile number"],
-              role: roleObject[(row["Role"] || "lot1").toLowerCase()],
+              role: row["Role"] || "lot1",
               district: row["District"],
               state: row["State"],
             };
