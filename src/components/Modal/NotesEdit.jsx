@@ -17,12 +17,12 @@ import { generateSignUrl, uploadVideoThumbnail } from "../../util/uploadFile";
 import SuccessModal from "./SuccessModal";
 import { PDFDocument } from "pdf-lib";
 import { UserContext } from "@/app/_context/User";
-import { getCurrentDateTime } from "@/helpers/all";
+import { getCurrentDateTime, getFileType } from "@/helpers/all";
 import { useRouter } from "next/navigation";
 import { adminRoles, roleOptions } from "@/helpers/constant";
 
 const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
-	const router = useRouter();
+  const router = useRouter();
   const { setNotes } = useContext(UserContext);
   const [btnLoading, setBtnLoading] = useState(false);
   const [cancelTokenSource, setCancelTokenSource] = useState(null);
@@ -53,19 +53,10 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
         .nullable()
         .typeError("Invalid date format"),
       file: Yup.mixed().required("Notes file is required"),
-      title: Yup.string()
-        .required("Title is required")
-        .trim(),
-      description: Yup.string()
-        .required("Description is required")
-        .trim(),
+      title: Yup.string().required("Title is required").trim(),
+      description: Yup.string().required("Description is required").trim(),
       studentCategory: Yup.array()
-        .of(
-          Yup.string().oneOf(
-            adminRoles,
-            "Invalid category"
-          )
-        )
+        .of(Yup.string().oneOf(adminRoles, "Invalid category"))
         .min(1, "At least one category is required"),
     }),
     onSubmit: async (values) => {
@@ -196,6 +187,25 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
     setBtnLoading(false);
   };
 
+  const handleFileChange = async (file) => {
+    if (file) {
+      const fileName = file.name;
+      const fileType = getFileType(fileName);
+      formik.setFieldValue("file", file);
+      formik.setFieldValue("type", fileType);
+      if (fileType === "pdf") {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(arrayBuffer);
+          const numberOfPages = pdfDoc.getPageCount();
+          formik.setFieldValue("pageCount", numberOfPages);
+        } catch (err) {
+          setPageCount(0);
+        }
+      }
+    }
+  };
+
   return (
     <Fragment>
       {showModal && (
@@ -241,22 +251,19 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
                   <Uploader
                     filename={formik.values.file?.name}
                     title="Drag and drop files to upload"
-                    fileTypes={["PDF"]}
+                    fileTypes={[
+                      "PDF",
+                      "XLS",
+                      "XLSX",
+                      "PNG",
+                      "JPG",
+                      "JPEG",
+                      "DOC",
+                      "DOCX",
+                    ]}
                     multiple={false}
                     classes="max-w-full"
-                    onChange={async (file) => {
-                      if (file) {
-                        formik.setFieldValue("file", file);
-                        try {
-                          const arrayBuffer = await file.arrayBuffer();
-                          const pdfDoc = await PDFDocument.load(arrayBuffer);
-                          const numberOfPages = pdfDoc.getPageCount();
-                          formik.setFieldValue("pageCount", numberOfPages);
-                        } catch (err) {
-                          setPageCount(0);
-                        }
-                      }
-                    }}
+                    onChange={handleFileChange}
                     error={formik.touched.file && formik.errors.file}
                   />
                   <Uploader
@@ -295,31 +302,36 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
                   Category
                 </Typography>
                 <div className="category-checks grid gap-3 md:grid-cols-4 sm:grid-cols-2 grid-cols-1">
-                  {[{ label: "All", value: "all" }, ...roleOptions].map((category, index) => (
-                    <InputChecks
-                      type="checkbox"
-                      key={index}
-                      name="studentCategory"
-                      id={category.value}
-                      value={category.value}
-                      label={category.label}
-                      checked={formik?.values?.studentCategory?.includes(
-                        category.value
-                      )}
-                      onChange={(e) => {
-                        const isChecked = e.target.checked;
-                        const updatedCategories = isChecked
-                          ? [...formik.values?.studentCategory, category.value]
-                          : formik.values?.studentCategory.filter(
-                              (c) => c !== category.value
-                            );
-                        formik.setFieldValue(
-                          "studentCategory",
-                          updatedCategories
-                        );
-                      }}
-                    />
-                  ))}
+                  {[{ label: "All", value: "all" }, ...roleOptions].map(
+                    (category, index) => (
+                      <InputChecks
+                        type="checkbox"
+                        key={index}
+                        name="studentCategory"
+                        id={category.value}
+                        value={category.value}
+                        label={category.label}
+                        checked={formik?.values?.studentCategory?.includes(
+                          category.value
+                        )}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          const updatedCategories = isChecked
+                            ? [
+                                ...formik.values?.studentCategory,
+                                category.value,
+                              ]
+                            : formik.values?.studentCategory.filter(
+                                (c) => c !== category.value
+                              );
+                          formik.setFieldValue(
+                            "studentCategory",
+                            updatedCategories
+                          );
+                        }}
+                      />
+                    )
+                  )}
                 </div>
                 {formik.touched.studentCategory &&
                   formik.errors.studentCategory && (

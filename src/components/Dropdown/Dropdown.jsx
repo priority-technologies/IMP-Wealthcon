@@ -37,7 +37,11 @@ const Dropdown = ({
           tabIndex={tabIndex}
           className="dropdown-content z-10 menu p-2 mt-2 shadow bg-primary-content rounded-box w-48 dropdown-tag"
         >
-          {[ "/admin/yt_session", "/admin/live_session", "'/admin/notes'"].includes(pathname) && (
+          {[
+            "/admin/yt_session",
+            "/admin/live_session",
+            "/admin/notes",
+          ].includes(pathname) && (
             <li>
               <Link
                 href="#"
@@ -70,12 +74,14 @@ const Dropdown = ({
               Delete
             </Link>
           </li>
-          {["/admin/message", "/admin/announcement", "/admin/gallery"].includes(pathname) && (
+          {["/admin/message", "/admin/announcement", "/admin/gallery"].includes(
+            pathname
+          ) && (
             <li>
               <Link
                 href="#"
                 className="text-base-100 text-sm font-medium"
-                onClick={() => setViewUser(true)}	
+                onClick={() => setViewUser(true)}
               >
                 View
               </Link>
