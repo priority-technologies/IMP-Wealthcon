@@ -11,6 +11,7 @@ import { UserContext } from "@/app/_context/User";
 import logo from "@/assets/images/thumb-logo.jpg";
 import { adminRoleObject } from "@/helpers/constant";
 import ViewUserModel from "../Modal/ViewUserModel";
+import NotesEdit from "../Modal/NotesEdit";
 
 const GallaryCard = ({
   item,
@@ -21,7 +22,7 @@ const GallaryCard = ({
   editAble,
   type,
 }) => {
-  const { setGallery } = useContext(UserContext);
+  const { setNotes, setGallery } = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [viewUser, setViewUser] = useState(false);
@@ -36,13 +37,20 @@ const GallaryCard = ({
     const res = await axios.delete(
       type === "quote"
         ? `/api/admin/quote/${item._id}`
-        : `/api/admin/gallery/${item._id}`
+        : `/api/admin/notes/${item._id}`
     );
     if (res.status === 200) {
-      setGallery((prevVal) => {
-        const updateVal = prevVal.filter((e) => e._id !== item._id);
-        return updateVal;
-      });
+      if (type === "quote") {
+        setGallery((prevVal) => {
+          const updateVal = prevVal.filter((e) => e._id !== item._id);
+          return updateVal;
+        });
+      } else {
+        setNotes((prevVal) => {
+          const updateVal = prevVal.filter((e) => e._id !== item._id);
+          return updateVal;
+        });
+      }
     }
   };
 
@@ -75,12 +83,15 @@ const GallaryCard = ({
             {formatTimestampDate(item?.imageCreatedAt || item?.createdAt)}
           </p>
           {editAble && (
-            <div className='mt-2'>
+            <div className="mt-2">
               <b>Categories: </b>
-              {
-                item?.studentCategory && item?.studentCategory.length > 0 &&
-                <span>{item.studentCategory.map(cat => adminRoleObject[cat] || cat).join(', ')}</span>
-              }
+              {item?.studentCategory && item?.studentCategory.length > 0 && (
+                <span>
+                  {item.studentCategory
+                    .map((cat) => adminRoleObject[cat] || cat)
+                    .join(", ")}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -115,6 +126,15 @@ const GallaryCard = ({
             </div>
           </div>
         </div>
+      )}
+
+      {showModal && (
+        <NotesEdit
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalTitle="Edit notes Details"
+          item={item}
+        />
       )}
 
       {confirmModal && (
