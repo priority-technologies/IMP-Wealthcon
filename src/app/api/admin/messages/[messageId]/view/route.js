@@ -4,7 +4,6 @@ import connectToDatabase from "@/_database/mongodb";
 import Users from "@/schemas/Users";
 
 export async function GET(request, { params }) {
-  console.log("message",params)
   const { messageId } = params;
   const loggedUserId = request.headers.get("x-user-id");
 

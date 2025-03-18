@@ -36,9 +36,6 @@ const Table = ({
           .put(`/api/admin/users/${userId}`, {
             isActive: updatedData[index].isActive,
           })
-          .then((response) => {
-            console.log("Role updated successfully:");
-          })
           .catch((error) => {
             if (error?.response?.status === 401) {
               return router.push("/login");

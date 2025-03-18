@@ -32,7 +32,6 @@ const GallaryCard = ({
     setGallaryModal(true);
   };
 
-
   const handleDelete = async () => {
     const res = await axios.delete(
       type === "quote"

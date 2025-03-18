@@ -75,7 +75,6 @@ export async function PUT(request, { params: { videoId } }) {
       { status: 200 }
     );
   } catch (e) {
-    console.log(e);
     return NextResponse.json(
       { error: e.message || "Internal server error" },
       { status: 500 }

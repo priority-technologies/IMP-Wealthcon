@@ -120,7 +120,6 @@ export async function GET(request, { params }) {
 
     return NextResponse.json(user);
   } catch (error) {
-    console.log(error.message);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

@@ -106,7 +106,7 @@ const Filter = () => {
       setLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log("Request canceled:", error.message);
+        console.error("Request canceled:", error.message);
       } else if (error?.response?.status === 401) {
         return router.push("/login");
       } else {
