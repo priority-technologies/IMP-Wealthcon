@@ -11,7 +11,6 @@ export async function GET(request) {
         const filterCategory = request.nextUrl?.searchParams.get("category");
         const shorts = request.nextUrl?.searchParams.get("shorts") === "true";
 
-        console.log("shorts", shorts)
         const currentPage =
         parseInt(request.nextUrl?.searchParams.get("page"), 10) || 1;
         const pageSize = Number(process.env.NEXT_PUBLIC_ITEM_PER_PAGE);

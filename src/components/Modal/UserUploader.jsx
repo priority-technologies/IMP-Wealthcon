@@ -237,11 +237,11 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
                       label="Category"
                       options={roleOptions}
                       disabled={fieldsDisable}
-                      {...formik.getFieldProps("category")}
-                      error={formik.touched.category && formik.errors.category}
+                      {...formik.getFieldProps("role")}
+                      error={formik.touched.role && formik.errors.role}
                       className="modelSelect"
                     />
-                    {formik.touched.category && formik.errors.category ? (
+                    {formik.touched.role && formik.errors.role ? (
                       <span className="text-red-600">Category is required</span>
                     ) : (
                       ""

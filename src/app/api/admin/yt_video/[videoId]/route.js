@@ -29,7 +29,7 @@ export async function DELETE(request, { params: { videoId } }) {
         if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return NextResponse.json({ success: false, message: "Invalid video ID" }, { status: 400 });
         }
-        console.log("Attempting to delete video with ID:", videoId);
+        
         const video = await YoutubeVideos.findByIdAndDelete(videoId);
 
         if (!video) {

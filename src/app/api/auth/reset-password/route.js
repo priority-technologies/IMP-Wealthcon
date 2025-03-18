@@ -103,7 +103,6 @@ export async function PUT(request) {
       message: "Password updated successfully",
     });
   } catch (error) {
-    console.log(error.message);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

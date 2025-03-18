@@ -59,7 +59,7 @@ export async function middleware(request) {
         );
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (

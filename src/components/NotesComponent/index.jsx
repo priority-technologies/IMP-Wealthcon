@@ -37,6 +37,16 @@ export default function NoteComponent({ view, editAble, filter }) {
           },
         });
         setNotes(response.data.notes);
+
+        const galleryData = response.data.notes
+          .filter((item) => item.type === "image")
+          .map((item) => ({
+            ...item,
+            image: item.noteUrl,
+          }));
+
+        setGallaryData(galleryData);
+
         const currentPage = Number(response.headers["x-current-page"]);
         const totalPages = Number(response.headers["x-total-pages"]);
         const totalCount = Number(response.headers["x-total-item"]);
@@ -54,14 +64,6 @@ export default function NoteComponent({ view, editAble, filter }) {
     },
     [setLoading, setNotes]
   );
-
-  useEffect(() => {
-    const data = notes?.[clickIndex];
-    if (data) {
-      const updatedData = { ...data, image: data.noteUrl };
-      setGallaryData([updatedData]);
-    }
-  }, [clickIndex]);
 
   useEffect(() => {
     if (initialLoad) {
@@ -107,12 +109,15 @@ export default function NoteComponent({ view, editAble, filter }) {
         {notes?.length ? (
           notes.map((item, index) => {
             if (item.type === "image") {
+              const imageIndex = gallarydata.findIndex(
+                (val) => val._id === item._id
+              );
               return (
                 <GallaryCard
                   key={index}
                   item={{ ...item, image: item.noteUrl }}
                   setClickIndex={setClickIndex}
-                  index={index}
+                  index={imageIndex}
                   gallaryModal={gallaryModal}
                   setGallaryModal={setGallaryModal}
                   view={view}

@@ -55,7 +55,7 @@ export default function ViewerComponent({
         }}
       >
         {type === "pdf" && (
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
             <Viewer
               fileUrl={pdfUrl}
             />

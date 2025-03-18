@@ -18,7 +18,6 @@ import { adminRoles, roleOptions } from "@/helpers/constant";
 
 const EditMessage = ({ showModal, setShowModal, message, type }) => {
   const router = useRouter();
-  console.log("EditMessage", type);
   const { userDetails, setMessages, setAnnouncements } =
     useContext(UserContext);
   const [btnLoading, setBtnLoading] = useState(false);

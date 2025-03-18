@@ -23,7 +23,7 @@
     "nodemailer": "^6.9.15",
     "papaparse": "^5.4.1",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^4.10.38",
+    "pdfjs-dist": "^3.4.120",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-doc-viewer": "^0.1.14",
