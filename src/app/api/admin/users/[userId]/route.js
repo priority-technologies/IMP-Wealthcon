@@ -133,6 +133,8 @@ export async function PUT(request, { params }) {
     const {
       username,
       email,
+      district,
+      state,
       profilePicture,
       mobile,
       password,
@@ -193,6 +195,8 @@ export async function PUT(request, { params }) {
       user.email = email;
     }
 
+    if (district) user.district = district;
+    if (state) user.state = state;
     if (mobile) user.mobile = mobile;
     if (role) user.role = role;
     if (typeof isActive !== "undefined") user.isActive = isActive;
