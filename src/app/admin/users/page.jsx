@@ -129,6 +129,10 @@ const Filter = () => {
     setCurrentPage(1);
   };
 
+  useEffect(() => {
+    setFilteredData(tableData);
+  }, [tableData]);
+
   return (
     <Fragment>
       <div className="flex justify-between items-center flex-wrap mb-5 gap-3">
@@ -176,10 +180,7 @@ const Filter = () => {
           <Select
             value={selectedRole}
             onChange={handleFilterChange}
-            options={[
-              { label: "All Category", value: "all" },
-              ...roleOptions
-            ]}            
+            options={[{ label: "All Category", value: "all" }, ...roleOptions]}
             className="border rounded-none w-full p-4 pr-10"
           />
         </div>

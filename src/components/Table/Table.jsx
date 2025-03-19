@@ -1,6 +1,6 @@
 //with edit single user
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./Table.scss";
 import Select from "../Input/Select";
 import InputChecks from "../Input/InputChecks";
@@ -25,6 +25,7 @@ const Table = ({
   const [selectAll, setSelectAll] = useState(false);
   const [editUserId, setEditUserId] = useState(null); // Track the currently edited user
   const [editedUserData, setEditedUserData] = useState({}); // Store the edited user data
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleCheckboxChange = (userId, index, click) => {
     const updatedData = [...tableData];
@@ -112,10 +113,10 @@ const Table = ({
       alert("please enter username");
       return;
     }
-
     const updatedTableData = tableData.map((user) =>
       user._id === userId ? { ...user, ...editedUserData } : user
     );
+    console.log(updatedTableData);
 
     axios
       .put(`/api/admin/users/${userId}`, editedUserData)
@@ -157,11 +158,15 @@ const Table = ({
     return `TMP${String(idNumber).padStart(5, "0")}`;
   };
 
-  const filteredData =
-    tableData &&
-    tableData.filter(
-      (user) => selectedRole === "all" || user.role === selectedRole
-    );
+  useEffect(() => {
+    if (tableData.length) {
+      const data = tableData?.filter(
+        (user) => selectedRole === "all" || user.role === selectedRole
+      );
+
+      setFilteredData(data);
+    }
+  }, [tableData]);
 
   return (
     <Fragment>
@@ -196,7 +201,7 @@ const Table = ({
           ) : (
             <tbody>
               {" "}
-              {filteredData && filteredData.length ? (
+              {filteredData.length ? (
                 filteredData.map((data, index) => (
                   <tr key={data._id}>
                     <td>
