@@ -19,15 +19,14 @@ const Filter = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [tableData, setTableData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-
   const [selectedRole, setSelectedRole] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItem, setTotalItem] = useState(0);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   let cancelToken;
 
@@ -36,39 +35,41 @@ const Filter = () => {
     setCurrentPage(1);
   };
 
-  const handleProcessSelected = () => {
-    if (selectedUsers.length > 0) {
+  const handleProcessSelected = async () => {
+    const mySelectedUser = Array.from(selectedUsers);
+    if (mySelectedUser.length > 0) {
       const confirmed = window.confirm(
         "Are you sure you want to delete the selected users?"
       );
 
       if (confirmed) {
-        setLoading(true);
-        axios
-          .delete(`/api/admin/users/${selectedUsers[0]}`, {
-            data: { userIds: selectedUsers },
+        setDeleteLoading(true);
+        try {
+          await axios.delete(`/api/admin/users/${mySelectedUser[0]}`, {
+            data: { userIds: mySelectedUser },
             headers: { "Content-Type": "application/json" },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              alert("Users deleted successfully");
-              const updatedTableData = tableData.filter(
-                (user) => !selectedUsers.includes(user._id)
-              );
-              setTableData(updatedTableData);
-              setFilteredData(updatedTableData);
-              setSelectedUsers([]);
-            }
-          })
-          .catch((error) => {
-            if (error?.response?.status === 401) {
-              return router.push("/login");
-            }
-            console.error("Error deleting users:", error);
-          })
-          .finally(() => {
-            setLoading(false);
           });
+
+          alert("Users deleted successfully");
+          const newTableData = tableData.filter(
+            (user) => !mySelectedUser.includes(user._id)
+          );
+
+          setTotalItem((presVal) => presVal - mySelectedUser.length);
+          setTableData(newTableData);
+          setSelectedUsers(new Set());
+
+          if (newTableData.length === 0 && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+          }
+        } catch (error) {
+          if (error?.response?.status === 401) {
+            router.push("/login");
+          }
+          console.error("Error deleting users:", error);
+        } finally {
+          setDeleteLoading(false);
+        }
       }
     }
   };
@@ -85,34 +86,31 @@ const Filter = () => {
       const params = {
         category: role === "all" ? null : role,
         page,
+        search: searchTerm || undefined, // Only include search param if searchTerm exists
       };
 
-      if (searchTerm) {
-        params.search = searchTerm;
-      }
-
-      const res = await axios.get("/api/admin/users", {
+      let res = await axios.get("/api/admin/users", {
         params,
-        cancelToken: cancelToken?.token,
+        cancelToken: cancelToken.token,
       });
 
       if (res.status === 200) {
+        setSelectedUsers(new Set());
         setTableData(res.data);
-        setFilteredData(res.data);
         setCurrentPage(Number(res.headers["x-current-page"]));
         setTotalPages(Number(res.headers["x-total-pages"]));
         setTotalItem(Number(res.headers["x-total-item"]));
       }
-      setLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
         console.error("Request canceled:", error.message);
       } else if (error?.response?.status === 401) {
-        return router.push("/login");
+        router.push("/login");
       } else {
         console.error("Error fetching users:", error);
       }
     } finally {
+      setLoading(false);
     }
   };
 
@@ -128,10 +126,6 @@ const Filter = () => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
-
-  useEffect(() => {
-    setFilteredData(tableData);
-  }, [tableData]);
 
   return (
     <Fragment>
@@ -160,7 +154,8 @@ const Filter = () => {
             iconPosition="left"
             className="bg-red-600 border-red-600 btn-sm"
             onClick={handleProcessSelected}
-            disabled={selectedUsers.length === 0}
+            disabled={selectedUsers.size === 0}
+            loading={deleteLoading}
           >
             <span className="md:block hidden">Delete</span>
           </Button>
@@ -188,9 +183,10 @@ const Filter = () => {
 
       <Table
         selectedRole={selectedRole}
+        selectedUsers={selectedUsers}
         setSelectedUsers={setSelectedUsers}
         loading={loading}
-        tableData={filteredData}
+        tableData={tableData}
         setTableData={setTableData}
       />
       <Pagination
