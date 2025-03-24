@@ -20,6 +20,9 @@ const Table = ({
   loading,
   tableData,
   setTableData,
+  currentPage,
+  setCurrentPage,
+  totalPages,
 }) => {
   const router = useRouter();
   const [selectAll, setSelectAll] = useState(false);
@@ -133,15 +136,23 @@ const Table = ({
   };
 
   useEffect(() => {
-    if (tableData.length) {
-      const data = tableData?.filter(
+    const data =
+      tableData?.filter(
         (user) => selectedRole === "all" || user.role === selectedRole
-      );
-
+      ) || [];
+    if (data.length === 0) {
+     if (currentPage > 1 && currentPage >= totalPages) {
+        setCurrentPage(currentPage - 1);
+      } else if (currentPage < totalPages) {
+        setCurrentPage(currentPage);
+      } else {
+        setFilteredData([]);
+      }
+    } else {
       setFilteredData(data);
-      setSelectedUsers(new Set());
-      setSelectAll(false);
     }
+    setSelectedUsers(new Set());
+    setSelectAll(false);
   }, [tableData]);
 
   return (
