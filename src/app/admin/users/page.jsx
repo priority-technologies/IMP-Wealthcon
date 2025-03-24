@@ -54,7 +54,6 @@ const Filter = () => {
           const newTableData = tableData.filter(
             (user) => !mySelectedUser.includes(user._id)
           );
-
           setTotalItem((presVal) => presVal - mySelectedUser.length);
           setTableData(newTableData);
           setSelectedUsers(new Set());
@@ -188,6 +187,9 @@ const Filter = () => {
         loading={loading}
         tableData={tableData}
         setTableData={setTableData}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
       />
       <Pagination
         currentPage={currentPage}
