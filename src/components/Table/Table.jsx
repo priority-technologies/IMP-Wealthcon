@@ -141,10 +141,10 @@ const Table = ({
         (user) => selectedRole === "all" || user.role === selectedRole
       ) || [];
     if (data.length === 0) {
-     if (currentPage > 1 && currentPage >= totalPages) {
+      if (currentPage > 1 && currentPage > totalPages) {
         setCurrentPage(currentPage - 1);
       } else if (currentPage < totalPages) {
-        setCurrentPage(currentPage);
+        setCurrentPage(currentPage + 1);
       } else {
         setFilteredData([]);
       }
