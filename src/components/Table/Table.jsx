@@ -15,13 +15,13 @@ import { useRouter } from "next/navigation";
 
 const Table = ({
   selectedRole,
+  selectedUsers,
   setSelectedUsers,
   loading,
   tableData,
   setTableData,
 }) => {
   const router = useRouter();
-  const [selectedUsers, setSelectedUsersInternal] = useState(new Set()); // Track selected users
   const [selectAll, setSelectAll] = useState(false);
   const [editUserId, setEditUserId] = useState(null); // Track the currently edited user
   const [editedUserData, setEditedUserData] = useState({}); // Store the edited user data
@@ -47,29 +47,6 @@ const Table = ({
     }
   };
 
-  const handleRoleChange = (userId, selectedRole, index) => {
-    const updatedTableData = tableData.map((user) =>
-      user._id === userId ? { ...user, role: selectedRole } : user
-    );
-    setTableData(updatedTableData);
-    if (userId) {
-      axios
-        .put(`/api/admin/users/${userId}`, {
-          role: selectedRole,
-          isActive: updatedTableData[index].isActive,
-        })
-        .then((response) => {
-          alert("Role updated successfully");
-        })
-        .catch((error) => {
-          if (error?.response?.status === 401) {
-            return router.push("/login");
-          }
-          console.error("Error updating role:", error);
-        });
-    }
-  };
-
   const handleSelectAll = () => {
     let newSelectedUsers;
     if (selectAll) {
@@ -77,8 +54,7 @@ const Table = ({
     } else {
       newSelectedUsers = new Set(tableData.map((user) => user._id));
     }
-    setSelectedUsersInternal(newSelectedUsers);
-    setSelectedUsers(Array.from(newSelectedUsers)); // Update parent component
+    setSelectedUsers(newSelectedUsers);
     setSelectAll(!selectAll);
   };
 
@@ -89,8 +65,7 @@ const Table = ({
     } else {
       newSelectedUsers.add(userId);
     }
-    setSelectedUsersInternal(newSelectedUsers);
-    setSelectedUsers(Array.from(newSelectedUsers));
+    setSelectedUsers(newSelectedUsers);
   };
 
   const handleEditUser = (userId, userData) => {
@@ -116,7 +91,6 @@ const Table = ({
     const updatedTableData = tableData.map((user) =>
       user._id === userId ? { ...user, ...editedUserData } : user
     );
-    console.log(updatedTableData);
 
     axios
       .put(`/api/admin/users/${userId}`, editedUserData)
@@ -165,6 +139,8 @@ const Table = ({
       );
 
       setFilteredData(data);
+      setSelectedUsers(new Set());
+      setSelectAll(false);
     }
   }, [tableData]);
 

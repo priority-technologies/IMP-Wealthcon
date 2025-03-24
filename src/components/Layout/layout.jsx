@@ -358,7 +358,7 @@ const Layout = ({ className, data }) => {
                       {toggleSideMenu === "default" && "Videos"}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       href="/shorts"
                       className={`text-primary-content text-base px-6 py-4 ${
@@ -376,7 +376,7 @@ const Layout = ({ className, data }) => {
                       />
                       {toggleSideMenu === "default" && "Shorts"}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       href="/notes"
@@ -393,10 +393,10 @@ const Layout = ({ className, data }) => {
                         alt="logo"
                         className="text-center mr-2"
                       />
-                      {toggleSideMenu === "default" && "Notes"}
+                      {toggleSideMenu === "default" && "Notes & Charts"}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       href="/gallery"
                       className={`text-primary-content text-base px-6 py-4 ${
@@ -411,7 +411,7 @@ const Layout = ({ className, data }) => {
                       />
                       {toggleSideMenu === "default" && "Charts"}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       href="/message"
