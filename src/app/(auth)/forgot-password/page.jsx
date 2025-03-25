@@ -1,5 +1,5 @@
 import React from "react";
-import ForgotPasswordForm from "./forgotPasswordForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 export const metadata = {
   title: "Forgot Password",
