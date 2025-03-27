@@ -242,7 +242,7 @@ export default function LoginForm() {
 					>
 						Terms and Conditions
 					</Typography>
-					<Typography
+					{/* <Typography
 						tag='p'
 						size='text-base'
 						weight='font-medium'
@@ -322,7 +322,7 @@ export default function LoginForm() {
 						className='block mb-5'
 					>
 						By participating in TMP Wealthcon, I acknowledge that I have read, understood, and agree to the terms, conditions, and declarations stated above.
-					</Typography>
+					</Typography> */}
 					<div className='flex flex-wrap gap-3 mt-8 justify-center	'>
 						<Button
 							variant='btn-primary'
