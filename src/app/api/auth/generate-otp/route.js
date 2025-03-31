@@ -3,7 +3,7 @@ import Users from "@/schemas/Users";
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import { sendEmail } from "@/util/sendEmail";
+import { sendEmailByNodeMailer } from "@/util/sendEmail";
 
 export async function POST(request) {
   try {
@@ -40,7 +40,14 @@ export async function POST(request) {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    sendEmail(email, otp);
+    const isEmailSent = await sendEmailByNodeMailer(email, otp);
+
+    if (!isEmailSent) {
+      return NextResponse.json(
+        { error: "Failed to send email" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       {
