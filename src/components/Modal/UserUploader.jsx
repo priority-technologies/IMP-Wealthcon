@@ -144,7 +144,30 @@ const UserUploader = ({ id, showModal, setShowModal, fetchUsers }) => {
   };
 
   const handleUpload = async () => {
-    if (fileData.length > 0) {
+    let isValid = true;
+    for (let i = 0; i < fileData.length; i++) {
+      const row = fileData[i];
+      try {
+        if (!row["email"]) {
+          throw new Error("Email is missing or empty.");
+        }
+        if (!row["username"]) {
+          throw new Error(`${row.email} Full name is missing or empty.`);
+        }
+        if (!row["mobile"]) {
+          throw new Error(`${row.email} Mobile number is missing or empty.`);
+        }
+        if (!row["role"]) {
+          throw new Error(`${row.email} Role is missing or empty.`);
+        }
+      } catch (error) {
+        alert(`Error processing row ${i + 1}: ${error.message}`);
+        isValid = false;
+        break;
+      }
+    }
+
+    if (isValid && fileData.length > 0) {
       try {
         setLoading(true);
         await axios
