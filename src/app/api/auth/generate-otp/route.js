@@ -3,7 +3,7 @@ import Users from "@/schemas/Users";
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import { sendEmailByNodeMailer } from "@/util/sendEmail";
+import { sendEmailBySES } from "@/util/sendEmail";
 
 export async function POST(request) {
   try {
@@ -40,7 +40,7 @@ export async function POST(request) {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    const isEmailSent = await sendEmailByNodeMailer(email, otp);
+    const isEmailSent = await sendEmailBySES(email, otp);
 
     if (!isEmailSent) {
       return NextResponse.json(

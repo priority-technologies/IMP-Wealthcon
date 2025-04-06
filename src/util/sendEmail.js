@@ -55,9 +55,11 @@ export const sendEmailBySES = async (email, otp) => {
 
   try {
     await ses.sendEmail(params).promise();
+    return true;
     // console.log(`OTP email sent to ${email}`);
   } catch (error) {
     console.error("Send mail error ===> ", error.message);
+    return false;
   }
 };
 
