@@ -79,7 +79,7 @@ const GallaryCard = ({
             {item.title}
           </h2>
           <p className="text-base-200 text-sm font-normal history">
-            {formatTimestampDate(item?.imageCreatedAt || item?.createdAt)}
+            {formatTimestampDate(item?.imageCreatedAt || item?.notesCreatedAt)}
           </p>
           {editAble && (
             <div className="mt-2">
@@ -119,7 +119,7 @@ const GallaryCard = ({
                   {item.title}
                 </h2>
                 <div className="text-base-200 text-sm font-normal history">
-                  {formatTimestampDate(item?.imageCreatedAt || item?.createdAt)}
+                  {formatTimestampDate(item?.imageCreatedAt || item?.notesCreatedAt)}
                 </div>
               </div>
             </div>
