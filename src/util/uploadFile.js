@@ -273,7 +273,7 @@ export async function completeUploadNotes(
         description,
         studentCategory,
         pageCount,
-        type
+        type,
       },
       {
         headers: {
@@ -331,4 +331,19 @@ export async function completeUploadGallary(
       throw error;
     }
   }
+}
+
+export async function carryAndIncrementV(oldPath, newPath) {
+  const oldV = (() => {
+    const query = oldPath.split("?")[1] || "";
+    const params = new URLSearchParams(query);
+    return parseInt(params.get("v")) || 0;
+  })();
+
+  const base = newPath.split("?")[0];
+  const query = newPath.split("?")[1] || "";
+  const params = new URLSearchParams(query);
+  params.set("v", oldV + 1);
+
+  return `${base}?${params.toString()}`;
 }

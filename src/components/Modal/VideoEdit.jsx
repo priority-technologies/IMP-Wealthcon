@@ -14,6 +14,7 @@ import ProgressBar from "../ProgressBar";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
+  carryAndIncrementV,
   completeUploadVideo,
   initiateUpload,
   uploadPart,
@@ -161,6 +162,7 @@ const VideoEdit = ({ id, showModal, setShowModal, modalTitle, item }) => {
 
     let thumbnailName = thumbnail.name,
       thumbnailUrl = thumbnail.url;
+
     if (thumbnail && thumbnail?.size) {
       const thumbnailExt = thumbnail.name.split(".").pop();
       const name = item?.thumbnailFileName?.split(".").shift() || "";
@@ -176,6 +178,7 @@ const VideoEdit = ({ id, showModal, setShowModal, modalTitle, item }) => {
         source
       );
 
+      thumbnailName = await carryAndIncrementV(item.thumbnailFileName, thumbnailName)
       thumbnailUrl = response.thumbnailUrl;
     }
     setProgress(93);
@@ -187,6 +190,7 @@ const VideoEdit = ({ id, showModal, setShowModal, modalTitle, item }) => {
         parts,
         source
       );
+      filename = await carryAndIncrementV(item.videoFileName, filename)
       url = response.url;
     }
     setProgress(97);

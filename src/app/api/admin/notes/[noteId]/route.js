@@ -15,6 +15,7 @@ export async function PUT(request, { params: { noteId } }) {
       description,
       studentCategory,
       pageCount,
+      type
     } = await request.json();
     const studentCat = JSON.parse(studentCategory);
 
@@ -23,7 +24,7 @@ export async function PUT(request, { params: { noteId } }) {
       !date ||
       !title ||
       !description ||
-      !studentCat.length) {
+      !studentCat.length || !type) {
       return NextResponse.json(
         { error: 'Missing required fields.' },
         { status: 400 }
@@ -49,6 +50,7 @@ export async function PUT(request, { params: { noteId } }) {
           studentCategory: studentCat,
           pageCount,
           notesCreatedAt: parsedDate,
+          type
         },
       }
     );

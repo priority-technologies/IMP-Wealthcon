@@ -13,7 +13,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import axios from "axios";
-import { generateSignUrl, uploadVideoThumbnail } from "../../util/uploadFile";
+import {
+  carryAndIncrementV,
+  generateSignUrl,
+  uploadVideoThumbnail,
+} from "../../util/uploadFile";
 import SuccessModal from "./SuccessModal";
 import { PDFDocument } from "pdf-lib";
 import { UserContext } from "@/app/_context/User";
@@ -101,6 +105,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
       description,
       studentCategory,
       pageCount,
+      type
     } = values;
 
     if (!file) {
@@ -122,6 +127,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
       filename = `${name}.${ext}`;
 
       const { url } = await generateSignUrl(file, filename, source);
+      filename = await carryAndIncrementV(item.noteFileName, filename);
       notesUrl = url;
     }
 
@@ -142,6 +148,10 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
         thumbnailFiletype,
         source
       );
+      thumbnailFileName = await carryAndIncrementV(
+        item?.thumbnailFileName,
+        thumbnailFileName
+      );
       thumbnailUrl = response.thumbnailUrl;
     }
 
@@ -157,6 +167,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
         description,
         studentCategory: JSON.stringify(studentCategory),
         pageCount,
+        type
       },
       { cancelToken: source.token }
     );
