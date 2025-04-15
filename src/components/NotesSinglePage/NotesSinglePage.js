@@ -192,7 +192,7 @@ export default function NotesSinglePage({ notesId, admin }) {
                   {pdfData?.title}
                 </h2>
                 <p
-                  className="whitespace-pre-wrap text-base-content text-sm font-normal decs mb-4 text-left w-full"
+                  className="whitespace-pre-wrap text-gray-500 text-md font-normal decs mb-4 text-left w-full"
                   dangerouslySetInnerHTML={{
                     __html: linkifyDescription(pdfData?.description || ""),
                   }}

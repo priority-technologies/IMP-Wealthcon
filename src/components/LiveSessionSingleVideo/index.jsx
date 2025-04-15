@@ -276,7 +276,7 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
             {video?.title}
           </h2>
           <p
-            className="whitespace-pre-wrap text-base-content text-sm font-normal decs mb-4"
+            className="whitespace-pre-wrap text-gray-500 text-md font-normal decs mb-4"
             dangerouslySetInnerHTML={{
               __html: linkifyDescription(video?.description || ""),
             }}
