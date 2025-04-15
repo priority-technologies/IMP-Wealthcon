@@ -59,7 +59,7 @@ const NotesCard = ({ item, view, editAble }) => {
 						<h2 className='card-title text-base-100 text-lg font-medium'>
 							{item.title}
 						</h2>
-						<p className='text-base-content text-sm font-normal history'>
+						<p className='text-gray-500 text-md font-normal history'>
 							{item.description}
 						</p>
 						<p className='text-base-200 text-sm font-normal history'>

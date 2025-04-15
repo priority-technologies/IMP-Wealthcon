@@ -46,7 +46,7 @@ const VideoCard = ({ item, view, editAble, type }) => {
 	return (
 		<Fragment>
 			{view === 'grid' ? (
-				<div className='card shadow-lg grid-view'>
+				<div className='card shadow-lg justify-around'>
 					{editAble && (
 						<Dropdown
 							setShowModal={setShowModal}
@@ -77,7 +77,7 @@ const VideoCard = ({ item, view, editAble, type }) => {
 									{item?.title}
 								</h2>
 							</Link>
-							<p className='text-base-content text-sm font-normal decs'>
+							<p className='text-gray-500 text-md font-normal decs'>
 								{convertToLinks(item?.description)}
 							</p>
 							<p className='text-base-200 text-sm font-normal history'>
@@ -119,7 +119,7 @@ const VideoCard = ({ item, view, editAble, type }) => {
 								{item?.title}
 							</h2>
 						</Link>
-							<p className='text-base-200 text-sm font-normal decs'>
+							<p className='text-gray-500 text-md font-normal decs'>
 								{convertToLinks(item?.description)}
 							</p>
 							<p className='text-base-200 text-sm font-normal history'>
