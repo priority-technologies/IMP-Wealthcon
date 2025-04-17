@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { s3 } from '../../../../../helpers/constant';
-import Notes from '../../../../../schemas/Notes';
-import connectToDatabase from '../../../../../_database/mongodb';
+import { NextResponse } from "next/server";
+import { s3 } from "../../../../../helpers/constant";
+import Notes from "../../../../../schemas/Notes";
+import connectToDatabase from "../../../../../_database/mongodb";
 
 export async function PUT(request, { params: { noteId } }) {
   try {
@@ -15,25 +15,32 @@ export async function PUT(request, { params: { noteId } }) {
       description,
       studentCategory,
       pageCount,
-      type
+      type,
     } = await request.json();
     const studentCat = JSON.parse(studentCategory);
 
-    if (!filename ||
+    if (
+      !filename ||
       !notesUrl ||
       !date ||
       !title ||
       !description ||
-      !studentCat.length || !type) {
+      !studentCat.length ||
+      !type
+    ) {
       return NextResponse.json(
-        { error: 'Missing required fields.' },
+        { error: "Missing required fields." },
         { status: 400 }
       );
     }
 
     const parsedDate = new Date(date);
     const currentTime = new Date();
-    parsedDate.setHours(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds());
+    parsedDate.setHours(
+      currentTime.getHours(),
+      currentTime.getMinutes(),
+      currentTime.getSeconds()
+    );
 
     await connectToDatabase();
 
@@ -50,25 +57,25 @@ export async function PUT(request, { params: { noteId } }) {
           studentCategory: studentCat,
           pageCount,
           notesCreatedAt: parsedDate,
-          type
+          type,
         },
       }
     );
 
     if (updateNotes.modifiedCount === 0) {
       return NextResponse.json(
-        { error: 'Notes not found or not updated.' },
+        { error: "Notes not found or not updated." },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { message: 'Updated successfully' },
+      { message: "Updated successfully" },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: error.message || "Internal server error" },
       { status: 500 }
     );
   }
@@ -82,10 +89,7 @@ export async function DELETE(request, { params: { noteId } }) {
     const result = await Notes.findByIdAndDelete(noteId);
 
     if (!result) {
-      return NextResponse.json(
-        { error: 'Notes not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Notes not found" }, { status: 404 });
     }
 
     // Delete Notes from S3
@@ -106,13 +110,13 @@ export async function DELETE(request, { params: { noteId } }) {
 
     // Respond with success message
     return NextResponse.json(
-      { message: 'Notes and associated assets deleted successfully' },
+      { message: "Notes and associated assets deleted successfully" },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error deleting notes or assets:', error);
+    console.error("Error deleting notes or assets:", error);
     return NextResponse.json(
-      { error: 'Error deleting notes or assets', error: error.message },
+      { error: "Error deleting notes or assets", error: error.message },
       { status: 500 }
     );
   }
