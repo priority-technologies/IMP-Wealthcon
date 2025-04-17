@@ -50,6 +50,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
       description: item.description,
       studentCategory: item.studentCategory,
       pageCount: item.pageCount || 0,
+      type: item.type || "",
     },
     validationSchema: Yup.object({
       date: Yup.date()
@@ -62,6 +63,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
       studentCategory: Yup.array()
         .of(Yup.string().oneOf(adminRoles, "Invalid category"))
         .min(1, "At least one category is required"),
+      type: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {
@@ -105,7 +107,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
       description,
       studentCategory,
       pageCount,
-      type
+      type,
     } = values;
 
     if (!file) {
@@ -167,7 +169,7 @@ const NotesEdit = ({ showModal, setShowModal, modalTitle, item }) => {
         description,
         studentCategory: JSON.stringify(studentCategory),
         pageCount,
-        type
+        type,
       },
       { cancelToken: source.token }
     );
