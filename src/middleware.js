@@ -21,7 +21,8 @@ export async function middleware(request) {
     !path.endsWith("generate-otp") &&
     !path.endsWith("verify-otp") &&
     !path.endsWith("reset-password") &&
-    !path.endsWith("check-device")
+    !path.endsWith("check-device") &&
+    !path.endsWith("bg-images")
   ) {
     if (!isAuth) {
       const headers = {

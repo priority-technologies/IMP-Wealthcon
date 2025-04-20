@@ -88,3 +88,5 @@ export const roleOptions = [
   { label: "Lot 14", value: "lot14" },
   { label: "Lot 15", value: "lot15" },
 ];
+
+export const bgImageUploadPath = "/uploads/bg-images";

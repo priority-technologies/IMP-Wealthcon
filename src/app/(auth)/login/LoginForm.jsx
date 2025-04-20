@@ -12,6 +12,7 @@ import AuthLogo from "../../../assets/images/AuthLogo.png";
 import openEye from "../../../assets/images/svg/openEye.svg";
 import closeEye from "../../../assets/images/svg/closeEye.svg";
 import CloseIcon from "../../../assets/images/svg/closeIcon.svg";
+import BImage from "../../../assets/images/docters.jpg"
 import axios from "axios";
 
 import "../AuthLayout.scss";
@@ -29,6 +30,26 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
+
+  const [bgImage, setBgImage] = useState("");
+
+  useEffect(() => {
+    const fetchBgImage = async () => {
+      try {
+        const response = await axios.get(`/api/bg-images`);
+        console.log(response);
+        if (response?.data?.[0]?.path) {
+          setBgImage(response.data[0].path);
+        } else {
+          setBgImage(BImage);
+        }
+      } catch (error) {
+        console.error("Failed to load background image", error);
+        setBgImage("");
+      }
+    };
+    fetchBgImage();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -105,7 +126,7 @@ export default function LoginForm() {
   return (
     <>
       <div className="md:grid block grid-cols-10 ">
-        <div className="login-sidebar md:h-screen md:py-0 py-10 xl:col-span-6 col-span-5 ">
+        <div className="login-sidebar md:h-screen md:py-0 py-10 xl:col-span-6 col-span-5" style={{ backgroundImage: `url(${bgImage})` }}>
           <Image
             src={AuthLogo}
             alt="logo"
