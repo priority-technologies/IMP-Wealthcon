@@ -221,6 +221,27 @@ const Layout = ({ className, data }) => {
                             {toggleSideMenu === "default" && "Notes & Charts"}
                           </Link>
                         </li>
+                        <li>
+                          <Link
+                            href="/admin/bg-images"
+                            className={`text-primary-content text-base px-6 py-4  ${
+                              ["/admin/bg-images"].includes(pathname)
+                                ? "active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              closeDrawer();
+                              window?.sessionStorage?.removeItem("np");
+                            }}
+                          >
+                            <Image
+                              src={Notes}
+                              alt="logo"
+                              className="text-center mr-2"
+                            />
+                            {toggleSideMenu === "default" && "Auth Images"}
+                          </Link>
+                        </li>
                         {/* <li>
                           <Link
                             href="/admin/gallery"

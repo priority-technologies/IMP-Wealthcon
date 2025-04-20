@@ -1,0 +1,16 @@
+import { NextResponse } from "next/server";
+import BgImage from "@/schemas/BgImage";
+import connectToDatabase from "@/_database/mongodb";
+
+export async function GET() {
+  try {
+    await connectToDatabase();
+
+    const images = await BgImage.find().sort({ createdAt: -1 });
+
+    return NextResponse.json(images);
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
+  }
+}
