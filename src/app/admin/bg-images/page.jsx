@@ -91,7 +91,7 @@ export default function BgImagesPage() {
         {Array.isArray(images) && images.map((img) => (
           <div key={img._id} className="border p-2 rounded shadow">
             <img
-              src={`/uploads/${img.filename}`}
+              src={`https://impwealthcon.in/uploads/${img.filename}`}
               alt={img.filename}
               className="w-full h-40 object-cover"
             />

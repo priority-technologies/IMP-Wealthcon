@@ -32,7 +32,7 @@ export async function POST(req) {
 
     const newImage = new BgImage({
       filename,
-      path: `https://impwealthcon.in/uploads/${filename}`,
+      path: `/uploads/${filename}`,
     });
 
     await newImage.save();
