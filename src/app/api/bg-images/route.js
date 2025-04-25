@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import BgImage from "@/schemas/BgImage";
 import connectToDatabase from "@/_database/mongodb";
