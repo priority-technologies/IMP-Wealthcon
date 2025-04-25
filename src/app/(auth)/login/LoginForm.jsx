@@ -38,8 +38,8 @@ export default function LoginForm() {
       try {
         const response = await axios.get(`/api/bg-images`);
         console.log(response);
-        if (response?.data?.[0]?.path) {
-          setBgImage(response.data[0].path);
+        if (response?.data) {
+          setBgImage(response.data);
         } else {
           setBgImage(BImage);
         }

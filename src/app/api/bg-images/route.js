@@ -6,11 +6,19 @@ export async function GET() {
   try {
     await connectToDatabase();
 
-    const images = await BgImage.find().sort({ createdAt: -1 });
+    const images = await BgImage.find()
+      .select("filename")
+      .sort({ createdAt: -1 })
+      .limit(1);
 
-    return NextResponse.json(images);
+    return NextResponse.json(
+      `${process.env.AWS_CLOUDFRONT_URL}/${images[0].filename}`
+    );
   } catch (error) {
     console.error("Fetch error:", error);
-    return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch images" },
+      { status: 500 }
+    );
   }
 }

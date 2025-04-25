@@ -333,6 +333,25 @@ export async function completeUploadGallary(
   }
 }
 
+export async function completeUploadBgImage(filename, url) {
+  try {
+    await axios.post(
+      "/api/admin/upload/bg-images",
+      {
+        filename,
+        url,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error completing upload", error);
+  }
+}
+
 export async function carryAndIncrementV(oldPath, newPath) {
   const oldV = (() => {
     const query = oldPath.split("?")[1] || "";

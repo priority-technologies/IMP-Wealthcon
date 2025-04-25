@@ -1,11 +1,14 @@
 "use client";
 
+import { generateSignUrl, completeUploadBgImage } from "@/util/uploadFile";
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 export default function BgImagesPage() {
   const [images, setImages] = useState([]);
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [cancelTokenSource, setCancelTokenSource] = useState(null);
 
   // Fetch existing images
   useEffect(() => {
@@ -27,48 +30,46 @@ export default function BgImagesPage() {
       setImages([]);
     }
   };
-  
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleUpload = async () => {
-    if (!file) return alert("Please select a file");
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Image = reader.result;
-      setUploading(true);
+    setUploading(true);
 
-      const res = await fetch("/api/admin/bg-images/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          filename: file.name,
-          base64Image,
-        }),
-      });
+    const source = axios.CancelToken.source();
+    setCancelTokenSource(source);
 
-      const result = await res.json();
-      setUploading(false);
-      setFile(null);
-      fetchImages();
-    };
-    reader.readAsDataURL(file);
+    const ext = file.name.split(".").pop();
+    const filename = `bg-images/${Date.now()}.${ext}`;
+
+    const { url } = await generateSignUrl(file, filename, source);
+
+    await completeUploadBgImage(filename, url);
+
+    setUploading(false);
+    setCancelTokenSource(null);
+    setFile(null);
+    fetchImages();
   };
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this image?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this image?"
+    );
     if (!confirmDelete) return;
-  
-    const res = await fetch("/api/admin/bg-images", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-  
-    const result = await res.json();
+
+    try {
+      await axios.delete(`/api/admin/bg-images/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
     fetchImages();
   };
 
@@ -88,22 +89,23 @@ export default function BgImagesPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {Array.isArray(images) && images.map((img) => (
-          <div key={img._id} className="border p-2 rounded shadow">
-            <img
-              src={`/uploads/${img.filename}`}
-              alt={img.filename}
-              className="w-full h-40 object-cover"
-            />
-            <p className="text-sm mt-2 truncate">{img.filename}</p>
-            <button
-              className="mt-2 bg-red-500 text-white px-2 py-1 rounded text-sm"
-              onClick={() => handleDelete(img._id)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {Array.isArray(images) &&
+          images.map((img) => (
+            <div key={img._id} className="border p-2 rounded shadow">
+              <img
+                src={img.path}
+                alt={img.filename}
+                className="w-full h-40 object-cover"
+              />
+              <p className="text-sm mt-2 truncate">{img.filename}</p>
+              <button
+                className="mt-2 bg-red-500 text-white px-2 py-1 rounded text-sm"
+                onClick={() => handleDelete(img._id)}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
