@@ -12,7 +12,7 @@ import AuthLogo from "../../../assets/images/AuthLogo.png";
 import openEye from "../../../assets/images/svg/openEye.svg";
 import closeEye from "../../../assets/images/svg/closeEye.svg";
 import CloseIcon from "../../../assets/images/svg/closeIcon.svg";
-import BImage from "../../../assets/images/docters.jpg"
+import BImage from "../../../assets/images/docters.jpg";
 import axios from "axios";
 
 import "../AuthLayout.scss";
@@ -125,15 +125,14 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="md:grid block grid-cols-10 ">
-        <div className="login-sidebar md:h-screen md:py-0 py-10 xl:col-span-6 col-span-5" style={{ backgroundImage: `url(${bgImage})` }}>
-          <Image
-            src={AuthLogo}
-            alt="logo"
-            className="m-auto md:w-96 w-60 auth-layout-logo"
-          />
+      <div className="md:grid block grid-cols-10 h-screen">
+        <div className="login-sidebar flex flex-col justify-center xl:col-span-6 col-span-5">
+          <div className="flex min-h-[25vh] h-full">
+            <Image src={AuthLogo} alt="logo" className="m-auto md:w-96 w-60" />
+          </div>
+          <img src={bgImage} alt="logo" className="h-[75vh]" />
         </div>
-        <div className="bg-primary-content md:h-screen  content-center block md:py-0 py-10 xl:col-span-4 col-span-5">
+        <div className="bg-primary-content content-center block md:py-0 py-10 xl:col-span-4 col-span-5">
           <div className="m-auto sm:w-96 px-4">
             <form onSubmit={formik.handleSubmit}>
               <Typography
