@@ -47,6 +47,9 @@ export async function POST(request) {
           token,
           lastLoginAt: new Date(),
         },
+        $setOnInsert: {
+          userId: user._id,
+        },
       },
       { upsert: true }
     );

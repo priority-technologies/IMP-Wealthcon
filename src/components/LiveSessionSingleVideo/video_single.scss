@@ -1,7 +1,14 @@
+.video_player {
+  position: relative;
+  width: 640px;
+  border-radius: 12px;
+  overflow: hidden;
+}
 .video-single {
   .videoPlayer {
     border-radius: 14px;
     overflow: hidden;
+    margin: 0 !important;
     .video-react-big-play-button-left {
       width: 50px;
       height: 50px;

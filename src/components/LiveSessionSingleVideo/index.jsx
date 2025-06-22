@@ -20,7 +20,6 @@ import CorrectCircleIcon from "../../assets/images/svg/correctCircle.svg";
 import PlusCircleIcon from "../../assets/images/svg/plusCircle.svg";
 import BackPage from "../../assets/images/svg/backPage.svg";
 import PageLoading from "../Loading/PageLoading";
-import "./video_single.scss";
 import axios from "axios";
 import VideoLoading from "../Loading/VideoLoading";
 import { useRouter } from "next/navigation";
@@ -28,11 +27,14 @@ import { adminRoleObject } from "@/helpers/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
 import User from "../User";
 import Image from "next/image";
-import logo from '@/assets/images/thumb-logo.jpg';
+import logo from "@/assets/images/thumb-logo.jpg";
+import useTrackVideoProgress from "@/hooks/useTrackVideoProgress";
+import { minToSec, secToMin } from "@/helpers/all";
 
 export default function LiveSessionSingleVideo({ videoId, admin }) {
   const router = useRouter();
   const playerRef = useRef(null);
+  const { isVideoPlay } = useTrackVideoProgress(playerRef, videoId);
   const [video, setVideo] = useState(null);
   const [savedLater, setSavedLater] = useState(false);
   const [videoSrcType, setVideoSrcType] = useState([]);
@@ -46,6 +48,7 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
   const [viewPage, setViewPage] = useState(1);
   const [viewHasMore, setviewHasMore] = useState(false);
   const [viewLoading, setViewLoading] = useState(false);
+  const [watchProgress, setWatchProgress] = useState(0);
 
   const handleSaveLater = async () => {
     try {
@@ -74,12 +77,35 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
       if (res.status !== 200) {
         return;
       }
-      const { data } = res;
+      let { data } = res;
 
       const ext = data.videoUrl.split(".").pop();
       const validExtensions = ["mp4", "webm", "ogg"];
       if (validExtensions.includes(ext)) {
         setVideoSrcType(`video/${ext}`);
+      }
+
+      if (!data?.videoDuration || data.videoDuration === 0) {
+        const videoURL = data.videoUrl;
+
+        const videoElement = document.createElement("video");
+        videoElement.preload = "metadata";
+        videoElement.src = videoURL;
+
+        videoElement.onloadedmetadata = () => {
+          const duration = videoElement.duration;
+          const formattedDuration = secToMin(duration);
+
+          data.videoDuration = formattedDuration;
+
+          URL.revokeObjectURL(videoURL);
+        };
+      }
+      if (data?.watchedDuration) {
+        const total = minToSec(data?.videoDuration);
+        const watched = minToSec(data?.watchedDuration || 0);
+        const progress = (watched / total) * 100;
+        setWatchProgress(progress);
       }
 
       setVideo(data);
@@ -201,7 +227,7 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
       )}
       <div className="grid grid-cols-5 gap-4 video-single">
         {relatedVideos?.length ? (
-          <div className="lg:col-span-2 col-span-5 order-2 lg:order-1 hidden" >
+          <div className="lg:col-span-2 col-span-5 order-2 lg:order-1 hidden">
             <div className="flex justify-between">
               <h2 className="card-title text-base-100 text-2xl font-bold mb-2">
                 Short videos
@@ -255,6 +281,7 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
               playsInline
               // width={100}
               // height={100}
+              startTime={minToSec(video?.watchedDuration) || 0}
             >
               {video?.videoUrl && (
                 <source src={video.videoUrl} type={videoSrcType} />
@@ -271,6 +298,14 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
                 <VolumeMenuButton />
               </ControlBar>
             </Player>
+            {!isVideoPlay && watchProgress && (
+              <div className="videoProgressBarContainer">
+                <div
+                  className="videoProgressBarFill"
+                  style={{ width: `${watchProgress}%` }}
+                ></div>
+              </div>
+            )}
           </div>
           <h2 className="card-title text-base-100 text-2xl font-bold mb-2">
             {video?.title}

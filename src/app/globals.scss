@@ -108,3 +108,17 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+.videoProgressBarContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.videoProgressBarFill {
+  height: 100%;
+  background-color: #ff001fab;
+  transition: width 0.2s ease;
+}

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connectToDatabase from "../../../../_database/mongodb";
 import Users from "@/schemas/Users";
 import Videos from "@/schemas/Videos";
+import watchHistory from "@/schemas/WatchHistory";
 
 export async function GET(request, { params }) {
   const { videoId } = params;
@@ -19,8 +20,12 @@ export async function GET(request, { params }) {
     const videoObjectId = new mongoose.Types.ObjectId(videoId);
     const userObjectId = new mongoose.Types.ObjectId(loggedUserId);
 
-    const [video, userData] = await Promise.all([
+    const [video, history, userData] = await Promise.all([
       Videos.findById(videoObjectId),
+      watchHistory.findOne({
+        userId: userObjectId,
+        videoId: videoObjectId,
+      }),
       Users.aggregate([
         { $match: { _id: userObjectId } },
         {
@@ -61,6 +66,7 @@ export async function GET(request, { params }) {
         : "",
       videoUrl: `${process.env.AWS_CLOUDFRONT_URL}/${newVideo.videoFileName}`,
       savedLater,
+      watchedDuration: history?.watchedDuration || 0,
     });
   } catch (error) {
     console.error("Error fetching video:", error);

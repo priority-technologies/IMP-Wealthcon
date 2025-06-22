@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import connectToDatabase from "../../../_database/mongodb";
 import Users from "@/schemas/Users";
 import mongoose from "mongoose";
+import watchHistory from "@/schemas/WatchHistory";
+import { minToSec } from "@/helpers/all";
 
 export async function GET(request) {
   const loggedUserId = request.headers.get("x-user-id");
@@ -31,7 +33,7 @@ export async function GET(request) {
       options.sort = { [sortBy]: 1 };
     }
     if (filterCategory && filterCategory !== "null") {
-      if (filterCategory !== 'all') {
+      if (filterCategory !== "all") {
         options.match = { category: filterCategory };
       }
     }
@@ -74,6 +76,7 @@ export async function GET(request) {
                 videoUrl: "$savedLaterDetails.videoUrl",
                 videoFileName: "$savedLaterDetails.videoFileName",
                 videoCreatedAt: "$savedLaterDetails.videoCreatedAt",
+                videoDuration: "$savedLaterDetails.videoDuration",
               },
             },
             ...opt,
@@ -91,12 +94,46 @@ export async function GET(request) {
         },
       },
     ];
-
     const [result] = await Users.aggregate(pipeline);
+
+    const videoIds = result.paginatedResults.map(
+      (video) => new mongoose.Types.ObjectId(video._id)
+    );
+    const userHistories = loggedUserId
+      ? await watchHistory
+          .find({
+            userId: new mongoose.Types.ObjectId(loggedUserId),
+            videoId: { $in: videoIds },
+          })
+          .lean()
+      : [];
+
+    const historyMap = new Map();
+    userHistories.forEach((entry) => {
+      historyMap.set(entry.videoId.toString(), entry);
+    });
+
+    const newVideos = result.paginatedResults.map((video) => {
+      const history = historyMap.get(video._id.toString()) || null;
+      let progress = history;
+      if (history) {
+        const total = minToSec(video?.videoDuration);
+        const watched = minToSec(history?.watchedDuration);
+        progress = (watched / total) * 100;
+      }
+      return {
+        ...video,
+        thumbnail: video.thumbnailFileName
+          ? `${process.env.AWS_CLOUDFRONT_URL}/${video.thumbnailFileName}`
+          : "",
+        videoUrl: `${process.env.AWS_CLOUDFRONT_URL}/${video.videoFileName}`,
+        progress,
+      };
+    });
 
     return NextResponse.json(
       {
-        videos: result.paginatedResults,
+        videos: newVideos,
       },
       {
         headers: {
@@ -145,8 +182,9 @@ export async function POST(request) {
     await Users.updateOne({ _id: loggedUserId }, updateQuery);
 
     return NextResponse.json({
-      message: `Video ${action === "add" ? "added" : "remove"
-        } to saved list successfully`,
+      message: `Video ${
+        action === "add" ? "added" : "remove"
+      } to saved list successfully`,
     });
   } catch (error) {
     console.error("Error adding video to saved list:", error.message);
