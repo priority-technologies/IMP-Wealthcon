@@ -94,7 +94,7 @@ const NotesCard = ({ item, view, editAble }) => {
 								: `/notes/${item?._id}`
 						}
 					>
-						<div className='card-horizontal '>
+						<div className='card-horizontal justify-between'>
 							<div className='cardheader'>
 								<figure>
 									<Image
@@ -107,7 +107,7 @@ const NotesCard = ({ item, view, editAble }) => {
 									/>
 								</figure>
 								<div>
-									<h2 className='card-title text-base-100 text-lg font-medium min-w-48 max-w-48'>
+									<h2 className='card-title text-base-100 text-lg font-medium '>
 										{item.title}
 									</h2>
 									<div className='text-base-200 text-sm font-normal history'>
@@ -119,7 +119,7 @@ const NotesCard = ({ item, view, editAble }) => {
 								</div>
 							</div>
 							<div className='cardbody p-0'>
-								<div className='text-base-200 text-sm font-normal decs'>
+								<div className='text-base-200 text-sm font-normal decs max-w-48'>
 									{item.description}
 								</div>
 							</div>

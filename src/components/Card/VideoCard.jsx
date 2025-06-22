@@ -18,21 +18,21 @@ const convertToLinks = (text) => {
 	if (!text) return "";
 	const urlRegex = /(https?:\/\/[^\s]+)/g;
 	return text.split(urlRegex).map((part, index) =>
-	  part.match(urlRegex) ? (
-		<a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-		  {part}
-		</a>
-	  ) : (
-		part
-	  )
+		part.match(urlRegex) ? (
+			<a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+				{part}
+			</a>
+		) : (
+			part
+		)
 	);
-  };
-  
+};
+
 const VideoCard = ({ item, view, editAble, type }) => {
 	const { setLiveSessions } = useContext(UserContext);
 	const [showModal, setShowModal] = useState(false);
 	const [confirmModal, setConfirmModal] = useState(false);
-	
+
 	const handleDelete = async () => {
 		const res = await axios.delete((type === "yt") ? `/api/admin/yt_video/${item._id}` : `/api/admin/videos/${item._id}`);
 		if (res.status === 200) {
@@ -55,7 +55,7 @@ const VideoCard = ({ item, view, editAble, type }) => {
 						/>
 					)}
 					{(type !== "yt") ?
-					<>
+						<>
 							<Link
 								href={
 									editAble
@@ -86,39 +86,39 @@ const VideoCard = ({ item, view, editAble, type }) => {
 								)}
 							</p>
 							{editAble && (
-							<div className='mt-2'>
-								<b>Categories: </b>
-								{
-									item?.studentCategory && item?.studentCategory.length > 0 &&
-									<span>{item.studentCategory.map(cat => adminRoleObject[cat] || cat).join(', ')}</span>
-								}
-							</div>
+								<div className='mt-2'>
+									<b>Categories: </b>
+									{
+										item?.studentCategory && item?.studentCategory.length > 0 &&
+										<span>{item.studentCategory.map(cat => adminRoleObject[cat] || cat).join(', ')}</span>
+									}
+								</div>
 							)}
-						
-					</>
-					:
-					<>
-						<Link
-							href={
-								editAble
-									? `/admin/yt_session/${item?._id}`
-									: `/yt_session/${item._id}`
-							}
-						>
-							<figure>
-								<Image
-									src={item?.thumbnail || logo}
-									alt='Thumbnail'
-									height={200}
-									width={200}
-									loading='lazy'
-									quality={70}
-								/>
-							</figure>
-							<h2 className='card-title text-base-100 text-lg font-medium'>
-								{item?.title}
-							</h2>
-						</Link>
+
+						</>
+						:
+						<>
+							<Link
+								href={
+									editAble
+										? `/admin/yt_session/${item?._id}`
+										: `/yt_session/${item._id}`
+								}
+							>
+								<figure>
+									<Image
+										src={item?.thumbnail || logo}
+										alt='Thumbnail'
+										height={200}
+										width={200}
+										loading='lazy'
+										quality={70}
+									/>
+								</figure>
+								<h2 className='card-title text-base-100 text-lg font-medium'>
+									{item?.title}
+								</h2>
+							</Link>
 							<p className='text-gray-500 text-md font-normal decs'>
 								{convertToLinks(item?.description)}
 							</p>
@@ -128,15 +128,15 @@ const VideoCard = ({ item, view, editAble, type }) => {
 								)}
 							</p>
 							{editAble && (
-							<div className='mt-2'>
-								<b>Categories: </b>
-								{
-									item?.studentCategory && item?.studentCategory.length > 0 &&
-									<span>{item.studentCategory.map(cat => adminRoleObject[cat] || cat).join(', ')}</span>
-								}
-							</div>
+								<div className='mt-2'>
+									<b>Categories: </b>
+									{
+										item?.studentCategory && item?.studentCategory.length > 0 &&
+										<span>{item.studentCategory.map(cat => adminRoleObject[cat] || cat).join(', ')}</span>
+									}
+								</div>
 							)}
-					</>
+						</>
 					}
 
 				</div>
@@ -150,95 +150,95 @@ const VideoCard = ({ item, view, editAble, type }) => {
 						/>
 					)}
 					{(type !== "yt") ?
-					<>
-							<div className='card-horizontal '>
-							<Link
-								href={
-									editAble
-										? `/admin/live_session/${item?._id}`
-										: `/live_session/${item._id}`
-								}
-							>
-								<div className='cardheader'>
-									<figure>
-										<Image
-											src={
-												item?.thumbnail ||
-												logo
-											}
-											alt='File'
-											height={100}
-											width={100}
-											loading='lazy'
-											quality={70}
-										/>
-									</figure>
-									<div>
-										<h2 className='card-title text-base-100 text-lg font-medium min-w-48 max-w-48'>
-											{item?.title}
-										</h2>
-										<div className='text-base-200 text-sm font-normal history'>
-											{formatTimestampDate(
-												item?.videoCreatedAt ||
+						<>
+							<div className='card-horizontal justify-between'>
+								<Link
+									href={
+										editAble
+											? `/admin/live_session/${item?._id}`
+											: `/live_session/${item._id}`
+									}
+								>
+									<div className='cardheader'>
+										<figure>
+											<Image
+												src={
+													item?.thumbnail ||
+													logo
+												}
+												alt='File'
+												height={100}
+												width={100}
+												loading='lazy'
+												quality={70}
+											/>
+										</figure>
+										<div>
+											<h2 className='card-title text-base-100 text-lg font-medium '>
+												{item?.title}
+											</h2>
+											<div className='text-base-200 text-sm font-normal history'>
+												{formatTimestampDate(
+													item?.videoCreatedAt ||
 													item?.createdAt
-											)}
+												)}
+											</div>
 										</div>
 									</div>
-								</div>
-							</Link>
+								</Link>
 								<div className='cardbody p-0'>
-									<div className='text-base-200 text-sm font-normal decs'>
+									<div className='text-base-200 text-sm font-normal decs max-w-52'>
 										{convertToLinks(item?.description)}
 									</div>
 								</div>
 							</div>
-						
-					</>
-					:	
-					<>
-							<div className='card-horizontal '>
-							<Link
-								href={
-									editAble
-										? `/admin/yt_session/${item?._id}`
-										: `/yt_session/${item._id}`
-								}
-							>
-								<div className='cardheader'>
-									<figure>
-										<Image
-											src={
-												item?.thumbnail ||
-												logo
-											}
-											alt='File'
-											height={100}
-											width={100}
-											loading='lazy'
-											quality={70}
-										/>
-									</figure>
-									<div>
-										<h2 className='card-title text-base-100 text-lg font-medium min-w-48 max-w-48'>
-											{item?.title}
-										</h2>
-										<div className='text-base-200 text-sm font-normal history'>
-											{formatTimestampDate(
-												item?.videoCreatedAt ||
+
+						</>
+						:
+						<>
+							<div className='card-horizontal justify-between'>
+								<Link
+									href={
+										editAble
+											? `/admin/yt_session/${item?._id}`
+											: `/yt_session/${item._id}`
+									}
+								>
+									<div className='cardheader'>
+										<figure>
+											<Image
+												src={
+													item?.thumbnail ||
+													logo
+												}
+												alt='File'
+												height={100}
+												width={100}
+												loading='lazy'
+												quality={70}
+											/>
+										</figure>
+										<div>
+											<h2 className='card-title text-base-100 text-lg font-medium '>
+												{item?.title}
+											</h2>
+											<div className='text-base-200 text-sm font-normal history'>
+												{formatTimestampDate(
+													item?.videoCreatedAt ||
 													item?.createdAt
-											)}
+												)}
+											</div>
 										</div>
 									</div>
-								</div>
-								</Link> 
+								</Link>
 								<div className='cardbody p-0'>
-									<div className='text-base-200 text-sm font-normal decs'>
-										{convertToLinks(item?.description)}	
+									<div className='text-base-200 text-sm font-normal decs max-w-52'>
+										{convertToLinks(item?.description)}
 									</div>
 								</div>
 							</div>
-						
-					</>
+
+						</>
 					}
 				</div>
 			)}
@@ -252,14 +252,14 @@ const VideoCard = ({ item, view, editAble, type }) => {
 						item={item}
 					/>
 				)
-			: showModal && (
-				<YTEdit
-					showModal={showModal}
-					setShowModal={setShowModal}
-					modalTitle='Edit video Details'
-					item={item}
-				/>
-			)}
+				: showModal && (
+					<YTEdit
+						showModal={showModal}
+						setShowModal={setShowModal}
+						modalTitle='Edit video Details'
+						item={item}
+					/>
+				)}
 
 			{confirmModal && (
 				<ConfirmModal

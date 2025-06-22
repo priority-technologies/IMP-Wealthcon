@@ -37,7 +37,7 @@ const Card = ({ item, view, editAble }) => {
 				<div className='card shadow-lg list-view'>
 					{editAble && <Dropdown item={item} />}
 					<Link href={`/admin/live_session/${item?._id}`}>
-						<div className='card-horizontal '>
+						<div className='card-horizontal justify-between'>
 							<div className='cardheader'>
 								<figure>
 									<Image
@@ -49,12 +49,12 @@ const Card = ({ item, view, editAble }) => {
 										quality={70}
 									/>
 								</figure>
-								<h2 className='card-title text-base-100 text-lg font-medium min-w-48 max-w-48'>
+								<h2 className='card-title text-base-100 text-lg font-medium'>
 									{item?.title}
 								</h2>
 							</div>
 							<div className='cardbody p-0'>
-								<div className='text-base-200 text-sm font-normal desc'>
+								<div className='text-base-200 text-sm font-normal desc  max-w-48'>
 									{item?.description}
 								</div>
 								<div className='text-base-200 text-sm font-normal history'>
