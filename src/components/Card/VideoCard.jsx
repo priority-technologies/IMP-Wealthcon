@@ -82,13 +82,15 @@ const VideoCard = ({ item, view, editAble, type }) => {
                     loading="lazy"
                     quality={70}
                   />
-                  {item?.progress && (
+                  {item?.progress ? (
                     <div className="videoProgressBarContainer">
                       <div
                         className="videoProgressBarFill"
                         style={{ width: `${item.progress || 0}%` }}
                       ></div>
                     </div>
+                  ) : (
+                    ""
                   )}
                 </figure>
                 <h2 className="card-title text-base-100 text-lg font-medium">
@@ -133,13 +135,15 @@ const VideoCard = ({ item, view, editAble, type }) => {
                     loading="lazy"
                     quality={70}
                   />
-                  {item?.progress && (
+                  {item?.progress ? (
                     <div className="videoProgressBarContainer">
                       <div
                         className="videoProgressBarFill"
                         style={{ width: `${item.progress || 0}%` }}
                       ></div>
                     </div>
+                  ) : (
+                    ""
                   )}
                 </figure>
                 <h2 className="card-title text-base-100 text-lg font-medium">
@@ -197,13 +201,15 @@ const VideoCard = ({ item, view, editAble, type }) => {
                         loading="lazy"
                         quality={70}
                       />
-                      {item?.progress && (
+                      {item?.progress ? (
                         <div className="videoProgressBarContainer">
                           <div
                             className="videoProgressBarFill"
                             style={{ width: `${item.progress || 0}%` }}
                           ></div>
                         </div>
+                      ) : (
+                        ""
                       )}
                     </figure>
                     <div>
@@ -245,13 +251,15 @@ const VideoCard = ({ item, view, editAble, type }) => {
                         loading="lazy"
                         quality={70}
                       />
-                      {item?.progress && (
+                      {item?.progress ? (
                         <div className="videoProgressBarContainer">
                           <div
                             className="videoProgressBarFill"
                             style={{ width: `${item.progress || 0}%` }}
                           ></div>
                         </div>
+                      ) : (
+                        ""
                       )}
                     </figure>
                     <div>
