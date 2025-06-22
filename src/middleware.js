@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import isAuthenticated from "./auth/isAuthenticated";
-import { detectBrowserAndDevice } from "@/helpers/Backend";
 
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -48,6 +47,7 @@ export async function middleware(request) {
       );
 
       const data = await res.json();
+
       if (!data?.token || data?.token !== token) {
         const headers = {
           "Set-Cookie": `token=; HttpOnly; Path=/; Expires=${new Date(

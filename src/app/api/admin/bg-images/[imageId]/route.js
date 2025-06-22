@@ -7,7 +7,6 @@ export async function DELETE(request, { params: { imageId } }) {
     try {
         await connectToDatabase();
 
-        console.log("Deleting image with ID:", imageId);
         const result = await BgImage.findByIdAndDelete(imageId);
 
         if (!result) {

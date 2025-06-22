@@ -24,7 +24,7 @@ import {
 import axios from "axios";
 import SuccessModal from "./SuccessModal";
 import { UserContext } from "../../app/_context/User";
-import { getCurrentDateTime } from "@/helpers/all";
+import { getCurrentDateTime, secToMin } from "@/helpers/all";
 import { adminRoles, roleOptions } from "@/helpers/constant";
 
 const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
@@ -37,6 +37,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState("");
+  const [videoDuration, setVideoDuration] = useState(0);
 
   const formik = useFormik({
     initialValues: {
@@ -48,7 +49,6 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
       description: "",
       studentCategory: [],
       videoCategory: "",
-      duration: 0,
     },
     validationSchema: Yup.object({
       date: Yup.date()
@@ -56,19 +56,10 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
         .nullable()
         .typeError("Invalid date format"),
       file: Yup.mixed().required("Video file is required"),
-      title: Yup.string()
-        .required("Title is required")
-        .trim(),
-      description: Yup.string()
-        .required("Description is required")
-        .trim(),
+      title: Yup.string().required("Title is required").trim(),
+      description: Yup.string().required("Description is required").trim(),
       studentCategory: Yup.array()
-        .of(
-          Yup.string().oneOf(
-            adminRoles,
-            "Invalid category"
-          )
-        )
+        .of(Yup.string().oneOf(adminRoles, "Invalid category"))
         .min(1, "At least one category is required"),
       videoCategory: Yup.string()
         .required("Video category is required")
@@ -77,7 +68,6 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
     onSubmit: async (values) => {
       try {
         await handleUploadVideo(values);
-
       } catch (error) {
         setBtnLoading(false);
         if (error.message === "cancel") {
@@ -90,7 +80,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
         setError(true);
         setMsg("An error occurred. Please try again.");
         console.error("Error during submission:", error.message);
-      }finally{
+      } finally {
         setProgress(0);
       }
     },
@@ -117,7 +107,6 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
       description,
       studentCategory,
       videoCategory,
-      duration,
     } = values;
 
     if (!file) {
@@ -200,7 +189,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
       description,
       JSON.stringify(studentCategory),
       videoCategory,
-      duration,
+      videoDuration,
       source
     );
 
@@ -217,7 +206,7 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
         videoFileName: filename,
         studentCategory: studentCategory,
         videoCategory: videoCategory,
-        videoDuration: duration,
+        videoDuration: videoDuration,
         isDownloadable: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -287,30 +276,26 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
                     fileTypes={["MP4", "WEBM"]}
                     multiple={false}
                     onChange={(file) => {
+                      if (!file) return;
+
                       formik.setFieldValue("file", file);
+
                       if (!file.type.startsWith("video")) return;
+
                       const videoURL = URL.createObjectURL(file);
 
-                      const onLoadedMetadata = () => {
-                        const { duration } = videoRef.current;
-                        const minutes = Math.floor(duration / 60);
-                        const seconds = Math.floor(duration % 60);
-                        const formattedDuration = `${minutes}.${
-                          seconds < 10 ? "0" : ""
-                        }${seconds}`;
-                        formik.setFieldValue(
-                          "duration",
-                          Number(formattedDuration)
-                        );
+                      const videoElement = document.createElement("video");
+                      videoElement.preload = "metadata";
+                      videoElement.src = videoURL;
+
+                      videoElement.onloadedmetadata = () => {
+                        const duration = videoElement.duration;
+                        const formattedDuration = secToMin(duration)
+
+                        setVideoDuration(formattedDuration);
+
                         URL.revokeObjectURL(videoURL);
                       };
-
-                      videoRef.current.src = videoURL;
-                      videoRef.current.addEventListener(
-                        "loadedmetadata",
-                        onLoadedMetadata,
-                        { once: true }
-                      );
                     }}
                     error={formik.touched.file && formik.errors.file}
                   />
@@ -373,31 +358,33 @@ const VideoUploader = ({ showModal, setShowModal, modalTitle }) => {
                 </Typography>
 
                 <div className="category-checks grid gap-3 md:grid-cols-4 sm:grid-cols-2 grid-cols-1">
-                  {[{ label: "All", value: "all" }, ...roleOptions].map((category, index) => (
-                    <InputChecks
-                      type="checkbox"
-                      key={index}
-                      name="studentCategory"
-                      id={category.value}
-                      value={category.value}
-                      label={category.label}
-                      checked={formik.values.studentCategory.includes(
-                        category.value
-                      )}
-                      onChange={(e) => {
-                        const isChecked = e.target.checked;
-                        const updatedCategories = isChecked
-                          ? [...formik.values.studentCategory, category.value]
-                          : formik.values.studentCategory.filter(
-                              (c) => c !== category.value
-                            );
-                        formik.setFieldValue(
-                          "studentCategory",
-                          updatedCategories
-                        );
-                      }}
-                    />
-                  ))}
+                  {[{ label: "All", value: "all" }, ...roleOptions].map(
+                    (category, index) => (
+                      <InputChecks
+                        type="checkbox"
+                        key={index}
+                        name="studentCategory"
+                        id={category.value}
+                        value={category.value}
+                        label={category.label}
+                        checked={formik.values.studentCategory.includes(
+                          category.value
+                        )}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          const updatedCategories = isChecked
+                            ? [...formik.values.studentCategory, category.value]
+                            : formik.values.studentCategory.filter(
+                                (c) => c !== category.value
+                              );
+                          formik.setFieldValue(
+                            "studentCategory",
+                            updatedCategories
+                          );
+                        }}
+                      />
+                    )
+                  )}
                 </div>
                 {formik.touched.studentCategory &&
                   formik.errors.studentCategory && (

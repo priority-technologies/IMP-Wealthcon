@@ -37,7 +37,6 @@ export default function LoginForm() {
     const fetchBgImage = async () => {
       try {
         const response = await axios.get(`/api/bg-images`);
-        console.log(response);
         if (response?.data) {
           setBgImage(response.data);
         } else {

@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 import Videos from "../../../schemas/Videos";
 import { adminRoles } from "../../../helpers/constant";
 import connectToDatabase from "../../../_database/mongodb";
+import watchHistory from "@/schemas/WatchHistory";
+import mongoose from "mongoose";
+import { minToSec } from "@/helpers/all";
 
 export async function GET(request) {
   try {
     const loggedUserRole = request.headers.get("x-user-role");
+    const userId = request.headers.get("x-user-id");
+
     const sortBy = request.nextUrl?.searchParams.get("sortBy") || "date";
     const filterCategory = request.nextUrl?.searchParams.get("category");
     const shorts = request.nextUrl?.searchParams.get("shorts") === "true";
@@ -52,14 +57,45 @@ export async function GET(request) {
         .lean(),
       Videos.countDocuments(query),
     ]);
-    const newVideo = videos.map((val) => ({
-      ...val,
-      thumbnail: val.thumbnailFileName ? `${process.env.AWS_CLOUDFRONT_URL}/${val.thumbnailFileName}` : "",
-      videoUrl: `${process.env.AWS_CLOUDFRONT_URL}/${val.videoFileName}`,
-    }));
+
+    const videoIds = videos.map(
+      (video) => new mongoose.Types.ObjectId(video._id)
+    );
+    const userHistories = userId
+      ? await watchHistory
+          .find({
+            userId: new mongoose.Types.ObjectId(userId),
+            videoId: { $in: videoIds },
+          })
+          .lean()
+      : [];
+
+    const historyMap = new Map();
+    userHistories.forEach((entry) => {
+      historyMap.set(entry.videoId.toString(), entry);
+    });
+
+    const newVideos = videos.map((video) => {
+      const history = historyMap.get(video._id.toString()) || null;
+      let progress = history;
+      if (history) {
+        const total = minToSec(video?.videoDuration);
+        const watched = minToSec(history?.watchedDuration);
+        progress = (watched / total) * 100;
+      }
+      return {
+        ...video,
+        thumbnail: video.thumbnailFileName
+          ? `${process.env.AWS_CLOUDFRONT_URL}/${video.thumbnailFileName}`
+          : "",
+        videoUrl: `${process.env.AWS_CLOUDFRONT_URL}/${video.videoFileName}`,
+        progress,
+      };
+    });
+
     return NextResponse.json(
       {
-        videos: newVideo,
+        videos: newVideos,
       },
       {
         headers: {

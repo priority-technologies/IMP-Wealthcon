@@ -1,13 +1,13 @@
 export const getCurrentDateTime = () => {
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
+};
 
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -43,18 +43,18 @@ export const formatDate = (timestamp) => {
 
 // ======= Example ========
 // const customFormattedDate = formatTimestamp(timestamp, 'fr-FR', { weekday: 'short', hour: 'numeric', minute: 'numeric' });
-export const formatTimestamp = (timestamp, locale = 'en-US', options = {}) => {
+export const formatTimestamp = (timestamp, locale = "en-US", options = {}) => {
   const date = new Date(timestamp);
 
   // Default formatting options if none provided
   const defaultOptions = {
-    weekday: 'long', // e.g., Monday
-    year: 'numeric', // e.g., 2024
-    month: 'long',   // e.g., August
-    day: 'numeric',  // e.g., 27
-    hour: '2-digit', // e.g., 10 or 22
-    minute: '2-digit', // e.g., 05
-    second: '2-digit', // e.g., 09
+    weekday: "long", // e.g., Monday
+    year: "numeric", // e.g., 2024
+    month: "long", // e.g., August
+    day: "numeric", // e.g., 27
+    hour: "2-digit", // e.g., 10 or 22
+    minute: "2-digit", // e.g., 05
+    second: "2-digit", // e.g., 09
     // timeZoneName: 'short' // e.g., GMT, PST
   };
 
@@ -62,18 +62,22 @@ export const formatTimestamp = (timestamp, locale = 'en-US', options = {}) => {
   const formatOptions = { ...defaultOptions, ...options };
 
   return date.toLocaleString(locale, formatOptions);
-}
+};
 
-export const formatTimestampDateTime = (timestamp, locale = 'en-US', options = {}) => {
+export const formatTimestampDateTime = (
+  timestamp,
+  locale = "en-US",
+  options = {}
+) => {
   const date = new Date(timestamp);
 
   const defaultOptions = {
-    year: 'numeric',  // e.g., 2024
-    month: 'long',    // e.g., August
-    day: 'numeric',   // e.g., 26
-    hour: '2-digit',  // e.g., 09
-    minute: '2-digit',// e.g., 25
-    hour12: true      // Use 12-hour clock with AM/PM
+    year: "numeric", // e.g., 2024
+    month: "long", // e.g., August
+    day: "numeric", // e.g., 26
+    hour: "2-digit", // e.g., 09
+    minute: "2-digit", // e.g., 25
+    hour12: true, // Use 12-hour clock with AM/PM
   };
 
   const formatOptions = { ...defaultOptions, ...options };
@@ -81,15 +85,19 @@ export const formatTimestampDateTime = (timestamp, locale = 'en-US', options = {
   const formattedDate = date.toLocaleString(locale, formatOptions);
 
   return formattedDate;
-}
+};
 
-export const formatTimestampDate = (timestamp, locale = 'en-US', options = {}) => {
+export const formatTimestampDate = (
+  timestamp,
+  locale = "en-US",
+  options = {}
+) => {
   const date = new Date(timestamp);
 
   const defaultOptions = {
-    year: 'numeric',  // e.g., 2024
-    month: 'long',    // e.g., August
-    day: 'numeric',   // e.g., 26
+    year: "numeric", // e.g., 2024
+    month: "long", // e.g., August
+    day: "numeric", // e.g., 26
   };
 
   const formatOptions = { ...defaultOptions, ...options };
@@ -97,7 +105,7 @@ export const formatTimestampDate = (timestamp, locale = 'en-US', options = {}) =
   const formattedDate = date.toLocaleString(locale, formatOptions);
 
   return formattedDate;
-}
+};
 
 export const formatTimestampOnDays = (timestamp) => {
   const now = new Date();
@@ -134,7 +142,9 @@ export const formatTimestampOnDays = (timestamp) => {
 export const formatTimeOnSec = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+  return `${String(minutes).padStart(2, "0")}:${String(
+    remainingSeconds
+  ).padStart(2, "0")}`;
 };
 
 export const debounce = (fn, delay) => {
@@ -148,21 +158,41 @@ export const debounce = (fn, delay) => {
       fn.apply(this, args);
     }, delay);
   };
-}
+};
 
 export const getFileType = (fileName) => {
-  const fileExtension = fileName.split('.').pop().toLowerCase();
+  const fileExtension = fileName.split(".").pop().toLowerCase();
 
   const fileTypeMap = {
-    pdf: 'pdf',
-    xls: 'excel',
-    xlsx: 'excel',
-    png: 'image',
-    jpg: 'image',
-    jpeg: 'image',
-    doc: 'word',
-    docx: 'word'
+    pdf: "pdf",
+    xls: "excel",
+    xlsx: "excel",
+    png: "image",
+    jpg: "image",
+    jpeg: "image",
+    doc: "word",
+    docx: "word",
   };
 
-  return fileTypeMap[fileExtension] || 'unknown';
+  return fileTypeMap[fileExtension] || "unknown";
+};
+
+export const secToMin = (value) => {
+  if (!value) return 0;
+  const minutes = Math.floor(value / 60);
+  const seconds = Math.floor(value % 60);
+  const formattedDuration = Number(
+    `${minutes}.${seconds < 10 ? "0" : ""}${seconds}`
+  );
+  return formattedDuration;
+};
+
+export const minToSec = (value) => {
+  if (!value) return 0;
+
+  const [minStr, secStr = "0"] = value.toString().split(".");
+  const minutes = parseInt(minStr, 10);
+  const seconds = parseInt(secStr.padEnd(2, "0"), 10);
+
+  return minutes * 60 + seconds;
 };
