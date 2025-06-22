@@ -298,13 +298,15 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
                 <VolumeMenuButton />
               </ControlBar>
             </Player>
-            {!isVideoPlay && watchProgress && (
+            {!isVideoPlay && watchProgress ? (
               <div className="videoProgressBarContainer">
                 <div
                   className="videoProgressBarFill"
                   style={{ width: `${watchProgress}%` }}
                 ></div>
               </div>
+            ) : (
+              ""
             )}
           </div>
           <h2 className="card-title text-base-100 text-2xl font-bold mb-2">
