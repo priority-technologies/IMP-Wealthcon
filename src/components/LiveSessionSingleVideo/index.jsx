@@ -267,7 +267,11 @@ export default function LiveSessionSingleVideo({ videoId, admin }) {
             onContextMenu={handleContextMenu}
             // onMouseDown={handleContextMenu}
             // onMouseUp={handleContextMenu}
-          >
+            style={{
+              maxWidth: "640px",
+              width: "100%",
+            }}
+            >
             <Player
               ref={playerRef}
               autoPlay={false}
