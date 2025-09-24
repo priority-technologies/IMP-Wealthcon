@@ -255,11 +255,7 @@ export default function LoginForm() {
             color="text-base-200"
             className="bloc mb-3"
           >
-            IMP Wealthcon is an educational platform. It does not provide
-            investment advice or tips, nor does it claim any guaranteed returns.
-            All participants must conduct their own research before making
-            investment decisions. IMP Wealthcon and its members are not liable
-            for any losses.
+            Step-One course powered by Neslife is an educational platform. It does not provide investment advice or tips, nor does it claim any guaranteed returns. All participants must conduct their own research before making investment decisions. Step-One course and its members are not liable for any losses.
           </Typography>
           <Typography
             tag="p"
@@ -269,11 +265,8 @@ export default function LoginForm() {
             className="block mb-3"
           >
             {" "}
-            IMP Wealthcon does not sell investment products, plans, or policies,
-            nor it is associated with any brokers or financial advisors. It also
-            does not accept sponsorships from external entities, including
-            pharmaceutical or insurance companies. Only MBBS/PG doctors can join
-            IMP Wealthcon.
+            Fees are not refundable, nontransferable .
+Personal investment advice will not be provided at Step ONE .
           </Typography>
           <Typography
             tag="p"
@@ -282,8 +275,7 @@ export default function LoginForm() {
             color="text-base-200"
             className="block mb-3"
           >
-            Content Access: Assignment videos will be available until the course
-            ends.
+            Step-One course does not sell investment products, plans, or policies, nor it is associated with any brokers or financial advisors. It also does not accept sponsorships from external entities, including pharmaceutical or insurance companies. Only doctors and their family members can join Step-One course.
           </Typography>
           <Typography
             tag="p"
@@ -292,8 +284,7 @@ export default function LoginForm() {
             color="text-base-200"
             className="block mb-3"
           >
-            Compliance: Scholars must adhere to IMP rules and not share course
-            content with non-IMP individuals.
+            Content Access: Assignment videos will be available until the course ends.
           </Typography>
           <Typography
             tag="p"
@@ -302,10 +293,7 @@ export default function LoginForm() {
             color="text-base-200"
             className="block mb-3"
           >
-            1. I understand the risks involved in trading and investing, and I
-            am aware of the unpredictable nature of financial markets. The
-            responsibility for any trading or investment decisions, including
-            potential losses, is entirely mine.
+            Compliance: Learners must adhere to rules and not share course content with any outsider.
           </Typography>
           <Typography
             tag="p"
@@ -314,8 +302,7 @@ export default function LoginForm() {
             color="text-base-200"
             className="block mb-3"
           >
-            2. I will abide by all trading rules taught in the course, including
-            those on leverage, diversification, and position sizing.
+             I understand the risks involved in investing, and I am aware of the unpredictable nature of financial markets. The responsibility for any investment decisions, including potential losses, is entirely mine.
           </Typography>
           <Typography
             tag="p"
@@ -324,21 +311,9 @@ export default function LoginForm() {
             color="text-base-200"
             className="block mb-3"
           >
-            3. My immediate family members are aware of and support my decision
-            to trade, fully understanding that any potential loss is my
-            responsibility.
+            By participating in Step-One course, I acknowledge that I have read, understood, and agree to the terms, conditions, and declarations stated above.
           </Typography>
-          <Typography
-            tag="p"
-            size="text-base"
-            weight="font-medium"
-            color="text-base-200"
-            className="block mb-3"
-          >
-            By participating in IMP Wealthcon, I acknowledge that I have read,
-            understood, and agree to the terms, conditions, and declarations
-            stated above.
-          </Typography>
+          
           <div className="flex flex-wrap gap-3 mt-8 justify-center	">
             <Button
               variant="btn-primary"
