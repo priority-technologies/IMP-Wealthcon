@@ -1,3 +1,4 @@
+import watchHistory from "@/schemas/WatchHistory";
 import connectToDatabase from "../../../../../_database/mongodb";
 import Users from "../../../../../schemas/Users";
 import { NextResponse } from "next/server";
@@ -234,6 +235,8 @@ export async function DELETE(request) {
         { status: 404 }
       );
     }
+
+    await watchHistory.deleteMany({ userId: { $in: userIds } });
 
     return NextResponse.json({
       message: `${deletionResults.deletedCount} user(s) deleted successfully`,

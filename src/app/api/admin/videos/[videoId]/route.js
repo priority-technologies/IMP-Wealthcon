@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Videos from "../../../../../schemas/Videos";
 import connectToDatabase from "../../../../../_database/mongodb";
 import { s3 } from "../../../../../helpers/constant";
+import watchHistory from "@/schemas/WatchHistory";
 
 export async function PUT(request, { params: { videoId } }) {
   try {
@@ -89,6 +90,8 @@ export async function DELETE(request, { params: { videoId } }) {
     if (!result) {
       return NextResponse.json({ error: "Video not found" }, { status: 404 });
     }
+
+    await watchHistory.deleteMany({videoId});
 
     // Delete video from S3
     const videoParams = {
