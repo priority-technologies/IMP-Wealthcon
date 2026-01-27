@@ -90,11 +90,21 @@ export const sendEmailByNodeMailer = async (email, otp) => {
                       </body>
                     `;
 
+    // const transport = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: process.env.SMTP_USER,
+    //     pass: process.env.SMTP_PASSWORD,
+    //   },
+    // });
+
     const transport = nodemailer.createTransport({
-      service: "gmail",
+      host: 'smtp.gmail.com', // smtp.gmail.com
+      port: 465, // 465 for SSL or 587 for TLS
+      secure: true, // true for port 465, false for 587
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
+        user: 'himanshuatre27@gmail.com', // your full Gmail address
+        pass: 'ruryxykpdfgkqncb', // your App Password (not Gmail password!)
       },
     });
 

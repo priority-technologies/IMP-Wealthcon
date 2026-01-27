@@ -248,7 +248,7 @@ export default function LoginForm() {
           >
             Terms and Conditions
           </Typography>
-          <Typography
+          {/* <Typography
             tag="p"
             size="text-base"
             weight="font-medium"
@@ -312,6 +312,44 @@ Personal investment advice will not be provided at Step ONE .
             className="block mb-3"
           >
             By participating in Step-One course, I acknowledge that I have read, understood, and agree to the terms, conditions, and declarations stated above.
+          </Typography> */}
+
+          <Typography
+            tag="p"
+            size="text-base"
+            weight="font-bold"
+            color="text-base-content"
+            className="block mb-3"
+          >
+            IMP – WEALTHCON DISCLAIMER
+          </Typography>
+
+          <Typography
+            tag="p"
+            size="text-base"
+            weight="font-medium"
+            color="text-base-200"
+            className="block mb-3"
+          >
+            IMP–WEALTHCON is a purely educational program intended to enhance financial knowledge and awareness. It does not provide investment advice, stock tips, or buy/sell/hold recommendations, and does not guarantee any returns. All educators and mentors associated with IMP–WEALTHCON are allopathic doctors and are not registered with SEBI as investment advisors, research analysts, or brokers.
+          </Typography>
+          <Typography
+            tag="p"
+            size="text-base"
+            weight="font-medium"
+            color="text-base-200"
+            className="block mb-3"
+          >
+            IMP–WEALTHCON abides by SEBI guidelines for educational activities and uses price data solely for educational purposes, which may be up to three months old. The program does not sell or promote any financial products, plans, or policies and has no affiliation or sponsorship with brokerage firms, financial advisors, insurance companies, pharmaceutical companies, or any external entities.
+          </Typography>
+          <Typography
+            tag="p"
+            size="text-base"
+            weight="font-medium"
+            color="text-base-200"
+            className="block mb-3"
+          >
+            All participants are solely responsible for their investment decisions and must conduct independent research. Equity investments are subject to market risks. IMP–WEALTHCON and its associates shall not be liable for any financial losses incurred by participants. All educators and participants are expected to comply with SEBI guidelines throughout the program.
           </Typography>
           
           <div className="flex flex-wrap gap-3 mt-8 justify-center	">
