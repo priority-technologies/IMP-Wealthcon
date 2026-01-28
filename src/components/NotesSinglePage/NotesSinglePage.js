@@ -1,7 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import ViewerComponent from "@/components/ViewerComponent";
 import Button from "@/components/Button";
 import BackPage from "@/assets/images/svg/backPage.svg";
 import openEyeGray from "@/assets/images/svg/openEyeGray.svg";
@@ -14,6 +14,11 @@ import { adminRoleObject } from "@/helpers/constant";
 import logo from "@/assets/images/thumb-logo.jpg";
 import User from "../User";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+const ViewerComponent = dynamic(
+  () => import("../ViewerComponent"),
+  { ssr: false }
+);
 
 export default function NotesSinglePage({ notesId, admin }) {
   const router = useRouter();
